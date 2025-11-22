@@ -1,0 +1,111 @@
+<svg width="512" height="256" viewBox="0 0 512 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#020817"/>
+    </linearGradient>
+
+    <!-- Main neon-ish gradient -->
+    <linearGradient id="aGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00D4FF"/>
+      <stop offset="50%" stop-color="#27E0FF"/>
+      <stop offset="100%" stop-color="#66E5FF"/>
+    </linearGradient>
+
+    <!-- Inner edges / strokes -->
+    <linearGradient id="aStrokeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#003B4D"/>
+      <stop offset="100%" stop-color="#00D4FF"/>
+    </linearGradient>
+
+    <!-- Glow blur -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feColorMatrix
+        in="blur"
+        type="matrix"
+        values="0 0 0 0 0
+                0 0 0 0 0.85
+                0 0 0 0 1
+                0 0 0 0.8 0" />
+    </filter>
+
+    <!-- Cut-out mask for the A -->
+    <mask id="aMask">
+      <!-- Base: solid white = visible -->
+      <rect x="0" y="0" width="256" height="256" fill="white"/>
+      <!-- Inner triangle hole: black = cut out -->
+      <polygon
+        points="160,94 210,210 110,210"
+        fill="black" />
+    </mask>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="512" height="256" fill="url(#bgGrad)"/>
+
+  <!-- Glow behind the A -->
+  <g filter="url(#glow)">
+    <polygon
+      points="80,220 160,40 240,220"
+      fill="#00D4FF"
+      opacity="0.45"/>
+  </g>
+
+  <!-- Stylized A -->
+  <g transform="translate(0,0)">
+    <!-- Main A body with inner cut-out -->
+    <polygon
+      points="80,220 160,40 240,220"
+      fill="url(#aGrad)"
+      stroke="url(#aStrokeGrad)"
+      stroke-width="4"
+      mask="url(#aMask)"
+      />
+
+    <!-- Futuristic diagonal crossbar -->
+    <rect x="110" y="148" width="100" height="8"
+      rx="4" ry="4"
+      transform="skewX(-12)"
+      fill="#02151C" />
+
+    <!-- Thin tech lines on the left leg -->
+    <line x1="108" y1="190" x2="136" y2="120"
+      stroke="#00F0FF"
+      stroke-width="2"
+      stroke-linecap="round"
+      opacity="0.6" />
+    <line x1="118" y1="205" x2="148" y2="135"
+      stroke="#00A9CC"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      opacity="0.7" />
+
+    <!-- Node accents -->
+    <circle cx="136" cy="120" r="3" fill="#00F0FF"/>
+    <circle cx="148" cy="135" r="2.5" fill="#00C4EE"/>
+  </g>
+
+  <!-- Wordmark: AUTONIX -->
+  <g transform="translate(270, 150)">
+    <text
+      x="0"
+      y="0"
+      fill="#E5F9FF"
+      font-size="40"
+      font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+      letter-spacing="4">
+      AUTONIX
+    </text>
+    <text
+      x="2"
+      y="24"
+      fill="#4BA9C9"
+      font-size="12"
+      font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+      letter-spacing="3">
+      AUTONOMOUS FUTURES
+    </text>
+  </g>
+</svg>
