@@ -1,0 +1,7 @@
+procs:
+  inngest:
+    cmd: ["make", "inngest/dev"]
+  http-server:
+    cmd: ["npm", "run", "dev"]
+  db/studio:
+    cmd: ["make", "db/studio"]

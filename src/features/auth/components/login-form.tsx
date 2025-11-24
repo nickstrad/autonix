@@ -25,6 +25,8 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Image from "next/image";
+import { APP_NAME } from "@/lib/constants";
+import { AppLogo } from "@/components/ui/app/AppLogo";
 
 const loginSchema = z.object({
   email: z.email("Please enter a valid email address"),
@@ -66,7 +68,7 @@ export function LoginForm() {
 
   return (
     <div className="flex flex-col items-center gap-6">
-      <Image src="/logos/logo.svg" alt="Autonix Logo" width={40} height={40} />
+      <AppLogo width={40} height={40} />
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
