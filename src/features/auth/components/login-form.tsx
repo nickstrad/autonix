@@ -25,8 +25,8 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Image from "next/image";
-import { APP_NAME } from "@/lib/constants";
-import { AppLogo } from "@/components/ui/app/AppLogo";
+import { PATHS } from "@/lib/constants";
+import { AppLogo } from "@/components/app/AppLogo";
 
 const loginSchema = z.object({
   email: z.email("Please enter a valid email address"),
@@ -51,11 +51,11 @@ export function LoginForm() {
       {
         email: values.email,
         password: values.password,
-        callbackURL: "/",
+        callbackURL: PATHS.HOME,
       },
       {
         onSuccess: (ctx) => {
-          router.push("/");
+          router.push(PATHS.HOME);
         },
         onError: (ctx) => {
           console.log("Error:", ctx.error);
@@ -142,7 +142,10 @@ export function LoginForm() {
               <Button className="w-full">Sign in</Button>
               <p className="text-sm">
                 Don't have an account?{" "}
-                <Link href="/signup" className="text-blue-500 hover:underline">
+                <Link
+                  href={PATHS.SIGNUP}
+                  className="text-blue-500 hover:underline"
+                >
                   Sign up
                 </Link>
               </p>

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { UserNav } from "./user-nav";
 import { APP_NAME } from "@/lib/constants";
-import { AppLogo } from "@/components/ui/app/AppLogo";
+import { AppLogo } from "@/components/app/AppLogo";
 
 export async function NavBar() {
   const session = await auth.api.getSession({ headers: await headers() });
