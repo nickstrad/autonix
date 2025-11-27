@@ -25,7 +25,7 @@ import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { APP_NAME, PATHS } from "@/lib/constants";
+import { APP_NAME, STATIC_PATHS } from "@/lib/constants";
 import { AppLogo } from "@/components/app/AppLogo";
 
 const signUpSchema = z
@@ -60,11 +60,11 @@ export function SignUpForm() {
         name: values.email,
         email: values.email,
         password: values.password,
-        callbackURL: PATHS.HOME,
+        callbackURL: STATIC_PATHS.HOME,
       },
       {
         onSuccess: () => {
-          router.push(PATHS.HOME);
+          router.push(STATIC_PATHS.HOME);
         },
         onError: (ctx) => {
           toast.error(ctx.error.message);
@@ -165,7 +165,7 @@ export function SignUpForm() {
               <p className="text-sm">
                 Already have an account?{" "}
                 <Link
-                  href={PATHS.LOGIN}
+                  href={STATIC_PATHS.LOGIN}
                   className="text-blue-500 hover:underline"
                 >
                   Login

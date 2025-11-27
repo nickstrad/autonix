@@ -1,4 +1,5 @@
 import { auth } from "@/lib/auth";
+import { ERRORS } from "@/lib/constants";
 import { polarClient } from "@/lib/polar";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { headers } from "next/headers";
@@ -27,10 +28,7 @@ export const protectedProcedure = baseProcedure.use(async ({ ctx, next }) => {
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "unauthorized",
-    });
+    throw new TRPCError(ERRORS.UNAUTHORIZED);
   }
   return next({ ctx: { ...ctx, auth: session } });
 });
@@ -42,11 +40,9 @@ export const premiumProcedure = protectedProcedure.use(
     });
 
     if (!customer.activeSubscriptions || !customer.activeSubscriptions.length) {
-      throw new TRPCError({
-        code: "FORBIDDEN",
-        message: "Active subscription required",
-      });
+      throw new TRPCError(ERRORS.FORBIDDEN);
     }
+
     return next({ ctx: { ...ctx, customer } });
   }
 );

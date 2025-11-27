@@ -18,14 +18,14 @@ import { usePathname } from "next/navigation";
 import { AppLogo } from "@/components/app/AppLogo";
 import { CreditCardIcon, LogOutIcon, StarIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { APP_NAME, PATHS, POLAR } from "@/lib/constants";
+import { APP_NAME, STATIC_PATHS, POLAR } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import { useHasActiveSubscription } from "@/features/subscriptions/hooks/use-subscription";
 
 const items = [
-  { label: "Credentials", path: PATHS.CREDENTIALS },
-  { label: "Executions", path: PATHS.EXECUTIONS },
-  { label: "Workflows", path: PATHS.WORKFLOWS },
+  { label: "Credentials", path: STATIC_PATHS.CREDENTIALS },
+  { label: "Executions", path: STATIC_PATHS.EXECUTIONS },
+  { label: "Workflows", path: STATIC_PATHS.WORKFLOWS },
 ];
 
 export function DashboardSidebar() {
@@ -107,7 +107,7 @@ export function DashboardSidebar() {
                     authClient.signOut({
                       fetchOptions: {
                         onSuccess: () => {
-                          router.push(PATHS.LOGIN);
+                          router.push(STATIC_PATHS.LOGIN);
                         },
                       },
                     });

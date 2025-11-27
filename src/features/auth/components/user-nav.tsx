@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import type { User } from "@/generated/prisma/client";
-import { PATHS } from "@/lib/constants";
+import { STATIC_PATHS } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 
 export function UserNav({ user }: { user: User }) {
@@ -42,7 +42,7 @@ export function UserNav({ user }: { user: User }) {
             authClient.signOut({
               fetchOptions: {
                 onSuccess: () => {
-                  router.push(PATHS.LOGIN);
+                  router.push(STATIC_PATHS.LOGIN);
                 },
               },
             });

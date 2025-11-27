@@ -25,7 +25,7 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Image from "next/image";
-import { PATHS } from "@/lib/constants";
+import { STATIC_PATHS } from "@/lib/constants";
 import { AppLogo } from "@/components/app/AppLogo";
 
 const loginSchema = z.object({
@@ -51,11 +51,11 @@ export function LoginForm() {
       {
         email: values.email,
         password: values.password,
-        callbackURL: PATHS.HOME,
+        callbackURL: STATIC_PATHS.HOME,
       },
       {
         onSuccess: (ctx) => {
-          router.push(PATHS.HOME);
+          router.push(STATIC_PATHS.HOME);
         },
         onError: (ctx) => {
           console.log("Error:", ctx.error);
@@ -143,7 +143,7 @@ export function LoginForm() {
               <p className="text-sm">
                 Don't have an account?{" "}
                 <Link
-                  href={PATHS.SIGNUP}
+                  href={STATIC_PATHS.SIGNUP}
                   className="text-blue-500 hover:underline"
                 >
                   Sign up
