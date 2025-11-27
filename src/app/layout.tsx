@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import { NavBar } from "@/features/auth/components/nav-bar";
 import { APP_NAME } from "@/lib/constants";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +35,9 @@ export default async function RootLayout({
       >
         <TRPCReactProvider>
           <NavBar />
-          {children}
-          <Toaster />
+          <NuqsAdapter>
+            {children} <Toaster />
+          </NuqsAdapter>
         </TRPCReactProvider>
       </body>
     </html>

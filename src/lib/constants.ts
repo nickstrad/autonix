@@ -40,3 +40,10 @@ export const POLAR = {
   PRODUCT_SLUG: "Autonix-Pro",
   PRODUCT_ID: "d3ab2dfb-5ad4-4fad-a524-c817ab34a5f5",
 } as const;
+
+export const PAGINATION = {
+  DEFAULT_PAGE: 1,
+  DEFAULT_PAGE_SIZE: 5,
+  MAX_PAGE_SIZE: 100,
+  MIN_PAGE_SIZE: 1,
+} as const;
