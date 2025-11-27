@@ -20,6 +20,8 @@ export const ENTITIES = {
   WORKFLOWS: "workflows",
 } as const;
 
+export type Entity = (typeof ENTITIES)[keyof typeof ENTITIES];
+
 export const STATIC_PATHS = {
   HOME: "/",
   LOGIN: "/login",

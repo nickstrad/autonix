@@ -1,21 +1,19 @@
 "use client";
 import { useSuspenseWorkflows } from "../hooks/use-workflows";
+import { WorkflowsEmpty } from "./workflows-empty";
+import { EntityList } from "@/components/app/entity-list"; // Import EntityList
+import { WorkflowsItem } from "./workflows-item";
 
 export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
 
-  function pretty(json: any) {
-    return JSON.stringify(json, null, 2)
-      .replace(/"(.*?)":/g, '<span class="text-blue-500">"$1"</span>:')
-      .replace(/: "(.*?)"/g, ': <span class="text-green-600">"$1"</span>');
-  }
-
   return (
-    <div className="flex-1 flex justify-center items-center p-4">
-      <pre
-        className="text-sm whitespace-pre-wrap"
-        dangerouslySetInnerHTML={{ __html: pretty(workflows.data.items) }}
-      />
-    </div>
+    <EntityList
+      items={workflows.data.items}
+      getKey={(workflow) => workflow.id}
+      renderItem={(workflow) => <WorkflowsItem workflow={workflow} />}
+      emptyView={<WorkflowsEmpty />}
+      className="p-4"
+    />
   );
 };

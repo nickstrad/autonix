@@ -1,3 +1,4 @@
+"use client";
 import { EntityHeader } from "@/components/app/entity-header";
 import { useCreateWorkflow } from "../hooks/use-create-workflow";
 import { DYNAMIC_PATH_BUILDERS, ENTITIES } from "@/lib/constants";
