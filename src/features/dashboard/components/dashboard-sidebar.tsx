@@ -18,8 +18,9 @@ import { usePathname } from "next/navigation";
 import { AppLogo } from "@/components/app/AppLogo";
 import { CreditCardIcon, LogOutIcon, StarIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { PATHS } from "@/lib/constants";
+import { APP_NAME, PATHS, POLAR } from "@/lib/constants";
 import { useRouter } from "next/navigation";
+import { useHasActiveSubscription } from "@/features/subscriptions/hooks/use-subscription";
 
 const items = [
   { label: "Credentials", path: PATHS.CREDENTIALS },
@@ -32,6 +33,8 @@ export function DashboardSidebar() {
   const { state } = useSidebar();
   const pathname = usePathname();
 
+  const { hasActiveSubscription, isLoading } = useHasActiveSubscription();
+
   const isActive = (path: string) => {
     return pathname === path;
   };
@@ -42,7 +45,7 @@ export function DashboardSidebar() {
         <Link href="/" className="flex items-center gap-2">
           <AppLogo width={30} height={30} />
           {state === "expanded" && (
-            <span className="text-lg font-semibold">Autonix</span>
+            <span className="text-lg font-semibold">{APP_NAME}</span>
           )}
         </Link>
         <SidebarTrigger />
@@ -76,22 +79,26 @@ export function DashboardSidebar() {
                 <SidebarMenuButton
                   tooltip="Billing Portal"
                   className="gap-x-4 h-10 px-4"
-                  onClick={() => {}}
+                  onClick={() => authClient.customer.portal()}
                 >
                   <CreditCardIcon className="h-4 w-4" />
                   <span>Billing</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  tooltip="Upgrade to Pro"
-                  className="gap-x-4 h-10 px-4"
-                  onClick={() => {}}
-                >
-                  <StarIcon className="h-4 w-4" />
-                  <span>Upgrade to Pro</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {!hasActiveSubscription && !isLoading && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    tooltip="Upgrade to Pro"
+                    className="gap-x-4 h-10 px-4"
+                    onClick={() =>
+                      authClient.checkout({ slug: POLAR.PRODUCT_SLUG })
+                    }
+                  >
+                    <StarIcon className="h-4 w-4" />
+                    <span>Upgrade to Pro</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
               <SidebarMenuItem>
                 <SidebarMenuButton
                   tooltip="Sign out"

@@ -9,3 +9,8 @@ export const PATHS = {
   EXECUTIONS: "/executions",
   WORKFLOWS: "/workflows",
 } as const;
+
+export const POLAR = {
+  PRODUCT_SLUG: "Autonix-Pro",
+  PRODUCT_ID: "d3ab2dfb-5ad4-4fad-a524-c817ab34a5f5",
+} as const;
