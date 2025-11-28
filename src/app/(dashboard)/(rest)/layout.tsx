@@ -1,6 +1,5 @@
 import React from "react";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { DashboardSidebar } from "@/features/dashboard/components/dashboard-sidebar";
+import { NavBar } from "@/features/auth/components/nav-bar";
 
 export default async function DashboardLayout({
   children,
@@ -8,9 +7,9 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
-      <DashboardSidebar />
-      <SidebarInset>{children}</SidebarInset>
-    </SidebarProvider>
+    <div>
+      <NavBar />
+      {children}
+    </div>
   );
 }
