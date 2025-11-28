@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { ItemGroup, Item } from "@/components/ui/item"; // Import ItemGroup and Item
 
 type EntityListProps<T> = {
   items: T[];
@@ -21,12 +20,15 @@ export function EntityList<T>({
   }
 
   return (
-    <ItemGroup className={cn("gap-4", className)}>
+    <div
+      className={cn(
+        "grid gap-4 sm:grid-cols-2 lg:grid-cols-3",
+        className,
+      )}
+    >
       {items.map((item, index) => (
-        <Item key={getKey ? getKey(item, index) : index} className="p-0">
-          {renderItem(item)}
-        </Item>
+        <div key={getKey ? getKey(item, index) : index}>{renderItem(item)}</div>
       ))}
-    </ItemGroup>
+    </div>
   );
 }

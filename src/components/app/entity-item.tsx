@@ -11,6 +11,15 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ItemActions } from "@/components/ui/item";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal, Trash2 } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
 
 export type EntityItemProps = {
   href: string;
@@ -29,8 +38,20 @@ export function EntityItem({
   subTitle,
   image,
   actions,
+  onRemove,
+  isRemoving,
   className,
 }: EntityItemProps) {
+  const handleRemove = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent link navigation
+
+    if (!onRemove || isRemoving) {
+      return;
+    }
+
+    onRemove();
+  };
+
   return (
     <Card
       className={cn(
@@ -40,14 +61,45 @@ export function EntityItem({
     >
       <Link href={href} className="flex flex-1 flex-col">
         <CardHeader>
-          <CardTitle>{title}</CardTitle>
+          <div className="flex flex-row justify-start items-center gap-4">
+            {image && <CardContent>{image}</CardContent>}
+
+            <CardTitle>{title}</CardTitle>
+          </div>
           {subTitle && <CardDescription>{subTitle}</CardDescription>}
         </CardHeader>
-        {image && <CardContent>{image}</CardContent>}
       </Link>
-      {actions && (
+      {(actions || onRemove) && (
         <ItemActions className="absolute top-4 right-4 z-10">
           {actions}
+          {onRemove && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <MoreHorizontal className="size-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={handleRemove}
+                  disabled={isRemoving}
+                >
+                  {isRemoving ? (
+                    <Spinner className="mr-2 size-4" />
+                  ) : (
+                    <Trash2 className="mr-2 size-4" />
+                  )}
+                  <span>Remove</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </ItemActions>
       )}
     </Card>
