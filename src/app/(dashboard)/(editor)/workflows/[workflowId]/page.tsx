@@ -26,7 +26,7 @@ const Page = async ({ params }: Props) => {
       <ErrorBoundary fallback={<EditorError workflowId={workflowId} />}>
         <Suspense fallback={<EditorLoading workflowId={workflowId} />}>
           <EditorHeader workflowId={workflowId} />
-          <main>
+          <main className="size-full">
             <Editor workflowId={workflowId} />
           </main>
         </Suspense>

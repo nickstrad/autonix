@@ -1,7 +1,7 @@
-import { EditorBreadcrumbs } from "./editor-breadcrumbs";
+import { UserNav } from "@/features/auth/components/user-nav";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { UserNav } from "@/features/auth/components/user-nav";
+import { EditorBreadcrumbs } from "./editor-breadcrumbs";
 import { EditorSaveButton } from "./editor-save-button";
 
 export const EditorHeader = async ({ workflowId }: { workflowId: string }) => {
