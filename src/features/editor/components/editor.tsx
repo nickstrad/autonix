@@ -31,19 +31,20 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
       setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
-    []
+    [setNodes]
   );
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) =>
       setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-    []
+    [setEdges]
   );
   const onConnect = useCallback(
     (params: Connection) =>
       setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
-    []
+    [setEdges]
   );
 
+  console.log({ nodes });
   return (
     <div className="size-full">
       <ReactFlow
@@ -59,11 +60,9 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         <Background />
         <Controls />
         <MiniMap />
-        {nodes.length > 1 && (
-          <Panel position="top-left" className="p-2">
-            <AddNodeButton />
-          </Panel>
-        )}
+        <Panel position="top-left" className="p-2">
+          <AddNodeButton />
+        </Panel>
       </ReactFlow>
     </div>
   );
