@@ -1,3 +1,7 @@
+import { InitialNode } from "@/components/app/initial-node";
+import { NodeType } from "@/generated/prisma/enums";
+import type { NodeTypes } from "@xyflow/react";
+
 export const APP_NAME = "Autonix";
 
 export const ERRORS = {
@@ -49,3 +53,9 @@ export const PAGINATION = {
   MAX_PAGE_SIZE: 100,
   MIN_PAGE_SIZE: 1,
 } as const;
+
+export const NODE_COMPONENTS = {
+  [NodeType.INITIAL]: InitialNode,
+} as const satisfies NodeTypes;
+
+export type RegisteredNodeType = keyof typeof NODE_COMPONENTS;

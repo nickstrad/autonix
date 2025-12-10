@@ -3,7 +3,7 @@ import { useState, useCallback } from "react";
 import { useSuspenseWorkflow } from "@/features/workflows/hooks/use-workflow";
 import { ErrorView } from "@/components/app/error-view";
 import { LoadingView } from "@/components/app/loading-view";
-import { ENTITIES } from "@/lib/constants";
+import { ENTITIES, NODE_COMPONENTS } from "@/lib/constants";
 import {
   type NodeChange,
   type EdgeChange,
@@ -17,9 +17,11 @@ import {
   Background,
   Controls,
   MiniMap,
+  Panel,
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
+import { AddNodeButton } from "@/components/app/add-node-button";
 
 export const Editor = ({ workflowId }: { workflowId: string }) => {
   const { data: workflow } = useSuspenseWorkflow({ id: workflowId });
@@ -50,12 +52,18 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        nodeTypes={NODE_COMPONENTS}
         fitView
         proOptions={{ hideAttribution: true }}
       >
         <Background />
         <Controls />
         <MiniMap />
+        {nodes.length > 1 && (
+          <Panel position="top-left" className="p-2">
+            <AddNodeButton />
+          </Panel>
+        )}
       </ReactFlow>
     </div>
   );
