@@ -2,7 +2,7 @@
 
 import { EntitySearch } from "@/components/app/entity-search";
 import { ENTITIES } from "@/lib/constants";
-import { useWorkflowParams } from "../hooks/use-workflow-params";
+import { useWorkflowParams } from "../hooks/use-workflows";
 import { useEntitySearch } from "@/hooks/use-entity-search";
 
 export const WorkflowsSearch = () => {

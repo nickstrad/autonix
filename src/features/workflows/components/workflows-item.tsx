@@ -6,7 +6,7 @@ import { DYNAMIC_PATH_BUILDERS } from "@/lib/constants";
 import { formatDistanceToNow, formatRelative } from "date-fns";
 import { WorkflowIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useRemoveWorkflow } from "../hooks/use-remove-workflow";
+import { useRemoveWorkflow } from "../hooks/use-workflows";
 import { useCallback } from "react";
 
 type WorkflowsItemProps = {

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useCallback } from "react";
-import { useSuspenseWorkflow } from "@/features/workflows/hooks/use-workflow";
+import { useSuspenseWorkflow } from "@/features/workflows/hooks/use-workflows";
 import { ErrorView } from "@/components/app/error-view";
 import { LoadingView } from "@/components/app/loading-view";
 import { ENTITIES, NODE_COMPONENTS } from "@/lib/constants";

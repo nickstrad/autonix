@@ -1,6 +1,6 @@
 "use client";
 
-import { useWorkflowParams } from "../hooks/use-workflow-params";
+import { useWorkflowParams } from "../hooks/use-workflows";
 import { EntityPagination } from "@/components/app/entity-pagination";
 import { useSuspenseWorkflows } from "../hooks/use-workflows";
 

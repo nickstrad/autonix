@@ -11,9 +11,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useUpdateWorkflowName } from "@/features/workflows/hooks/use-update-workflow-name";
 import { useEffect, useState, useRef } from "react";
-import { useSuspenseWorkflow } from "@/features/workflows/hooks/use-workflow";
+import {
+  useSuspenseWorkflow,
+  useUpdateWorkflowName,
+} from "@/features/workflows/hooks/use-workflows";
 import { cn } from "@/lib/utils";
 import { Spinner } from "@/components/ui/spinner";
 

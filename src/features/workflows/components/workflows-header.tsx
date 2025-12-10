@@ -1,6 +1,6 @@
 "use client";
 import { EntityHeader } from "@/components/app/entity-header";
-import { useCreateWorkflow } from "../hooks/use-create-workflow";
+import { useCreateWorkflow } from "../hooks/use-workflows";
 import { DYNAMIC_PATH_BUILDERS, ENTITIES } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
