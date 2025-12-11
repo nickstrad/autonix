@@ -1,14 +1,12 @@
-"use client";
-
 import {
   Breadcrumb,
+  BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { ENTITIES, STATIC_PATHS } from "@/lib/constants";
-import Link from "next/link";
+import { STATIC_PATHS, ENTITIES } from "@/lib/constants";
+import { Link } from "lucide-react";
 import { Fragment } from "react";
 import { EditorNameForm } from "./editor-name-form";
 
