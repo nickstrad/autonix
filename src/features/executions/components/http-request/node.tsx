@@ -1,4 +1,5 @@
 "use client";
+
 import { useReactFlow, type Node, type NodeProps } from "@xyflow/react";
 import { GlobeIcon } from "lucide-react";
 import { memo, useState } from "react";
@@ -6,6 +7,7 @@ import { BaseExecutionNode } from "../base-execution-node";
 import { HttpRequestFormValues, HttpRequestDialog } from "./dialog";
 
 export type HttpRequestNodeData = {
+  variableName: string;
   endpoint?: string;
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   body?: string;
@@ -37,9 +39,7 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
           ...n,
           data: {
             ...n.data,
-            endpoint: values.endpoint,
-            method: values.method,
-            body: values.body,
+            ...values,
           },
         };
       })

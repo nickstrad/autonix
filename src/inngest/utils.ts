@@ -35,7 +35,7 @@ export const topologicalSort = ({
     sortedNodeIds = toposort(edges);
     sortedNodeIds = [...new Set(sortedNodeIds)];
   } catch (err) {
-    if (err instanceof Error && err.message.includes("Cyclic")) {
+    if (err instanceof Error && err.message.toLowerCase().includes("cyclic")) {
       throw new Error("Workflow contains a cycle");
     }
     throw err;

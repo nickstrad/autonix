@@ -1,18 +1,24 @@
-import { NodeExecutor } from "@/features/executions/types";
-import { INNGEST_EVENTS } from "@/inngest/functions";
-import { HttpRequestNodeData } from "./node";
 import { NonRetriableError } from "inngest";
 import axios, { AxiosRequestConfig } from "axios";
+import { INNGEST_EVENTS } from "@/inngest/functions";
+import { NodeExecutor } from "@/features/executions/types";
+import { HttpRequestNodeData } from "./node";
 
 export const httpRequestExecutor: NodeExecutor<HttpRequestNodeData> = async ({
-  nodeId,
   context,
   step,
-  data: { endpoint, method, body },
+  data: { variableName, endpoint, method, body },
 }) => {
   if (!endpoint) {
     //TODO: publish error state for http request
     throw new NonRetriableError("HTTP Request node: No endpoint configured");
+  }
+
+  if (!variableName) {
+    //TODO: publish error state for http request
+    throw new NonRetriableError(
+      "HTTP Request node: No variable name configured"
+    );
   }
 
   // TODO: Publish 'loading' state for http request
@@ -24,18 +30,25 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestNodeData> = async ({
     if (["PATCH", "POST", "PUT"].includes(options.method ?? "")) {
       //TODO: parse values given by user
       options.data = body;
+      options.headers = {
+        "Content-Type": "application/json",
+      };
     }
 
     const results = await axios(endpoint, options);
 
-    return {
-      ...context,
-      [nodeId]: {
+    const responsePayload = {
+      httpResponse: {
         status: results.status,
         statusText: results.statusText,
         // headers: Object.fromEntries(results.headers.entries()),
         data: results.data ?? results.statusText,
       },
+    };
+
+    return {
+      ...context,
+      [variableName]: responsePayload,
     };
   });
 
