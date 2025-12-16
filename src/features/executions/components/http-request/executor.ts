@@ -47,6 +47,10 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestNodeData> = async ({
 
     const interpolatedEndpoint = Handlebars.compile(endpoint)(context);
 
+    if (!interpolatedEndpoint || typeof interpolatedEndpoint !== "string") {
+      throw new NonRetriableError(`HTTP Request node: Invalid endpoint URL`);
+    }
+
     const results = await axios(interpolatedEndpoint, options);
 
     const responsePayload = {
