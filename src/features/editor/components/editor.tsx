@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import {
   useSuspenseWorkflow,
   useUpdateWorkflow,
@@ -28,6 +28,8 @@ import "@xyflow/react/dist/style.css";
 import { editorAtom } from "../store/atoms";
 import { Button } from "@/components/ui/button";
 import { SaveIcon } from "lucide-react";
+import { NodeType } from "@/generated/prisma/enums";
+import { ExecuteWorkflowButton } from "./execute-workflow-button";
 
 export const Editor = ({ workflowId }: { workflowId: string }) => {
   const { data: workflow } = useSuspenseWorkflow({ id: workflowId });
@@ -52,6 +54,11 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
     [setEdges]
   );
 
+  const hasManualTrigger = useMemo(
+    () => nodes.some((node) => node.type === NodeType.MANUAL_TRIGGER),
+    [nodes]
+  );
+
   return (
     <div className="size-full">
       <ReactFlow
@@ -73,9 +80,14 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         <Background />
         <Controls />
         <MiniMap />
-        <Panel position="top-left" className="p-2">
+        <Panel position="top-left">
           <AddNodeButton />
         </Panel>
+        {hasManualTrigger && (
+          <Panel position="bottom-center">
+            <ExecuteWorkflowButton workflowId={workflowId} />
+          </Panel>
+        )}
       </ReactFlow>
     </div>
   );

@@ -10,7 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { HttpRequestNodeData } from "./node";
 import {
   Form,
   FormControl,
@@ -39,40 +38,40 @@ const formSchema = z.object({
   //.refine(),TODO: add body validation
 });
 
-export type FormValues = z.infer<typeof formSchema>;
+export type HttpRequestFormValues = z.infer<typeof formSchema>;
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: z.infer<typeof formSchema>) => void;
-  nodeData?: HttpRequestNodeData;
+  defaultValues?: Partial<HttpRequestFormValues>;
 };
 
+const getDefaultValues = (
+  defaultValues?: Partial<HttpRequestFormValues>
+): HttpRequestFormValues => ({
+  endpoint: defaultValues?.endpoint ?? "",
+  method: defaultValues?.method ?? "GET",
+  body: defaultValues?.body ?? "",
+});
+
 export const HttpRequestDialog = ({
-  nodeData,
+  defaultValues,
   open,
   onOpenChange,
   onSubmit,
 }: Props) => {
-  const form = useForm<FormValues>({
+  const form = useForm<HttpRequestFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      endpoint: nodeData?.endpoint || "",
-      method: nodeData?.method || "GET",
-      body: nodeData?.body || "",
-    },
+    defaultValues: getDefaultValues(defaultValues),
   });
 
   useEffect(() => {
     if (open) {
-      form.reset({
-        endpoint: nodeData?.endpoint || "",
-        method: nodeData?.method || "GET",
-        body: nodeData?.body || "",
-      });
+      form.reset(getDefaultValues(defaultValues));
     }
-  }, [open, nodeData?.endpoint, nodeData?.method, nodeData?.body, form]);
+  }, [open, defaultValues, form]);
 
-  function handleSubmit(data: FormValues) {
+  function handleSubmit(data: HttpRequestFormValues) {
     onSubmit(data);
     onOpenChange(false);
   }
