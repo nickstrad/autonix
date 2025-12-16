@@ -15,7 +15,7 @@ import {
 interface BaseExecutionNodeProps extends NodeProps {
   icon: LucideIcon | string;
   name: string;
-  description?: string;
+  description?: React.ReactNode | string;
   children?: ReactNode;
   status?: NodeStatus;
   onSettings?: () => void;

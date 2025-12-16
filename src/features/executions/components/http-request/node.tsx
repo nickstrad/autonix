@@ -5,11 +5,12 @@ import { GlobeIcon } from "lucide-react";
 import { memo, useState } from "react";
 import { BaseExecutionNode } from "../base-execution-node";
 import { HttpRequestFormValues, HttpRequestDialog } from "./dialog";
+import { Separator } from "@/components/ui/separator";
 
 export type HttpRequestNodeData = {
   variableName: string;
-  endpoint?: string;
-  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+  endpoint: string;
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   body?: string;
 };
 
@@ -21,9 +22,19 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
 
   const nodeStatus = "initial";
   const nodeData = props.data;
-  const description = nodeData?.endpoint
-    ? `${nodeData.method || "GET"} ${nodeData.endpoint}`
-    : "Not configured";
+  const description =
+    nodeData.endpoint && nodeData.variableName ? (
+      <div>
+        <Separator className="my-1" />
+
+        <div>{nodeData.variableName}</div>
+        <div>
+          {nodeData.method} {nodeData.endpoint}
+        </div>
+      </div>
+    ) : (
+      "Not configured"
+    );
 
   const handleOpenSettings = () => {
     setDialogOpen(true);
