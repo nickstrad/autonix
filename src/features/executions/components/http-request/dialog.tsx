@@ -135,26 +135,6 @@ export const HttpRequestDialog = ({
             />
             <FormField
               control={form.control}
-              name="endpoint"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Endpoint URL</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="https://example.com/api/{{httpResponse.data.id}}"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Static URL or use {"{{variables}}"} for simple values or{" "}
-                    {"{{json variable}}"} to stringify objects
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="method"
               render={({ field }) => (
                 <FormItem>
@@ -181,6 +161,27 @@ export const HttpRequestDialog = ({
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="endpoint"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Endpoint URL</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="https://example.com/api/{{httpResponse.data.id}}"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Static URL or use {"{{variables}}"} for simple values or{" "}
+                    {"{{json variable}}"} to stringify objects
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             {showBody && (
               <FormField
                 control={form.control}

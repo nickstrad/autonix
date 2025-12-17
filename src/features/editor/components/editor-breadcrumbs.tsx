@@ -6,9 +6,9 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { STATIC_PATHS, ENTITIES } from "@/lib/constants";
-import { Link } from "lucide-react";
 import { Fragment } from "react";
 import { EditorNameForm } from "./editor-name-form";
+import Link from "next/link";
 
 interface EditorBreadcrumbsProps {
   workflowId: string;

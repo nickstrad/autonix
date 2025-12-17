@@ -1,5 +1,6 @@
 import { NodeType } from "@/generated/prisma/browser";
 import { inngest } from "@/inngest/client";
+import { sendWorkflowExecutionEvent } from "@/inngest/utils";
 import { INNGEST_EVENTS, PAGINATION } from "@/lib/constants";
 import prisma from "@/lib/db";
 import {
@@ -27,11 +28,8 @@ export const workflowsRouter = createTRPCRouter({
         },
       });
 
-      await inngest.send({
-        name: INNGEST_EVENTS.EXECUTE_WORKFLOW.NAME,
-        data: {
-          workflowId,
-        },
+      await sendWorkflowExecutionEvent({
+        workflowId,
       });
 
       return workflow;

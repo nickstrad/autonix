@@ -1,5 +1,6 @@
 import { InitialNode } from "@/components/app/initial-node";
 import { HttpRequestNode } from "@/features/executions/components/http-request/node";
+import { GoogleFormTrigger } from "@/features/triggers/components/google-form-trigger/node";
 import { ManualTriggerNode } from "@/features/triggers/components/manual-trigger/node";
 import { NodeType } from "@/generated/prisma/enums";
 import type { NodeTypes } from "@xyflow/react";
@@ -60,6 +61,7 @@ export const NODE_COMPONENTS = {
   [NodeType.INITIAL]: InitialNode,
   [NodeType.HTTP_REQUEST]: HttpRequestNode,
   [NodeType.MANUAL_TRIGGER]: ManualTriggerNode,
+  [NodeType.GOOGLE_FORM_TRIGGER]: GoogleFormTrigger,
 } as const satisfies NodeTypes;
 
 export type RegisteredNodeType = keyof typeof NODE_COMPONENTS;
@@ -71,6 +73,7 @@ const PREFIX = "event";
 const INNGEST_EVENT_EXECUTE_WORKFLOW = "workflows/execute.workflow";
 const INNGEST_EVENT_MANUAL_TRIGGER = "triggers/manual.trigger";
 const INNGEST_EVENT_HTTP_REQUEST = "http-request/http.request";
+const INNGEST_EVENT_GOOGLE_FORM_TRIGGER = "triggers/google.form";
 
 export const INNGEST_EVENTS = {
   EXECUTE_WORKFLOW: {
@@ -85,9 +88,14 @@ export const INNGEST_EVENTS = {
     NAME: INNGEST_EVENT_HTTP_REQUEST,
     ID: `${PREFIX}/${INNGEST_EVENT_HTTP_REQUEST}`,
   },
+  GOOGLE_FORM_TRIGGER: {
+    NAME: INNGEST_EVENT_GOOGLE_FORM_TRIGGER,
+    ID: `${PREFIX}/${INNGEST_EVENT_GOOGLE_FORM_TRIGGER}`,
+  },
 } as const;
 
 export const INNGEST_CHANELS = {
   HTTP_REQUEST: "http-request-execution",
   MANUAL_TRIGGER: "manual-trigger-execution",
+  GOOGLE_FORM_TRIGGER: "google-form-trigger-execution",
 } as const;
