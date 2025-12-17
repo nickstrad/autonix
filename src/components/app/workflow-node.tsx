@@ -8,7 +8,7 @@ type WorkflowNodeProps = {
   onDelete?: () => void;
   onSettings?: () => void;
   name?: string;
-  description?: string;
+  description?: React.ReactNode | string;
 };
 
 export const WorkflowNode = ({
@@ -40,9 +40,9 @@ export const WorkflowNode = ({
         >
           <p className="font-medium">{name}</p>
           {description && (
-            <p className="text-muted-foreground truncate text-sm">
+            <div className="text-muted-foreground truncate text-sm">
               {description}
-            </p>
+            </div>
           )}
         </NodeToolbar>
       )}

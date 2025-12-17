@@ -63,3 +63,31 @@ export const NODE_COMPONENTS = {
 } as const satisfies NodeTypes;
 
 export type RegisteredNodeType = keyof typeof NODE_COMPONENTS;
+
+/*
+INNGEST values
+*/
+const PREFIX = "event";
+const INNGEST_EVENT_EXECUTE_WORKFLOW = "workflows/execute.workflow";
+const INNGEST_EVENT_MANUAL_TRIGGER = "triggers/manual.trigger";
+const INNGEST_EVENT_HTTP_REQUEST = "http-request/http.request";
+
+export const INNGEST_EVENTS = {
+  EXECUTE_WORKFLOW: {
+    NAME: INNGEST_EVENT_EXECUTE_WORKFLOW,
+    ID: `${PREFIX}/${INNGEST_EVENT_EXECUTE_WORKFLOW}`,
+  },
+  MANUAL_TRIGGER: {
+    NAME: INNGEST_EVENT_MANUAL_TRIGGER,
+    ID: `${PREFIX}/${INNGEST_EVENT_MANUAL_TRIGGER}`,
+  },
+  HTTP_REQUEST: {
+    NAME: INNGEST_EVENT_HTTP_REQUEST,
+    ID: `${PREFIX}/${INNGEST_EVENT_HTTP_REQUEST}`,
+  },
+} as const;
+
+export const INNGEST_CHANELS = {
+  HTTP_REQUEST: "http-request-execution",
+  MANUAL_TRIGGER: "manual-trigger-execution",
+} as const;

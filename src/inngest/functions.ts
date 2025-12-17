@@ -4,31 +4,53 @@ import { NonRetriableError } from "inngest";
 import { topologicalSort } from "./utils";
 import { NodeType } from "@/generated/prisma/browser";
 import { getExcecutor } from "@/features/executions/lib/executor-registry";
+import { httpRequestChannel } from "./channels/http-request";
+import { INNGEST_EVENTS } from "@/lib/constants";
+import { manualTriggerChannel } from "./channels/manual-trigger";
 
-const PREFIX = "event";
-const INNGEST_EVENT_EXECUTE_WORKFLOW = "workflows/execute.workflow";
-const INNGEST_EVENT_MANUAL_TRIGGER = "triggers/manual.trigger";
-const INNGEST_EVENT_HTTP_REQUEST = "http-request/http.request";
+type ValidRetryNumber =
+  | 0
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 6
+  | 7
+  | 8
+  | 9
+  | 10
+  | 11
+  | 12
+  | 13
+  | 14
+  | 15
+  | 16
+  | 17
+  | 18
+  | 19
+  | 20;
 
-export const INNGEST_EVENTS = {
-  EXECUTE_WORKFLOW: {
-    NAME: INNGEST_EVENT_EXECUTE_WORKFLOW,
-    ID: `${PREFIX}/${INNGEST_EVENT_EXECUTE_WORKFLOW}`,
-  },
-  MANUAL_TRIGGER: {
-    NAME: INNGEST_EVENT_MANUAL_TRIGGER,
-    ID: `${PREFIX}/${INNGEST_EVENT_MANUAL_TRIGGER}`,
-  },
-  HTTP_REQUEST: {
-    NAME: INNGEST_EVENT_HTTP_REQUEST,
-    ID: `${PREFIX}/${INNGEST_EVENT_HTTP_REQUEST}`,
-  },
-} as const;
+const isAllowedRetryNumber = (value: number): value is ValidRetryNumber => {
+  return (
+    typeof value === "number" && !isNaN(value) && value >= 0 && value <= 20
+  );
+};
+
+const retriesEnv = process.env.INGEST_RETRIES;
+const parsedRetries = Number(retriesEnv);
+const retries = isAllowedRetryNumber(parsedRetries) ? parsedRetries : 0;
 
 export const executeWorkflow = inngest.createFunction(
-  { id: INNGEST_EVENTS.EXECUTE_WORKFLOW.ID },
-  { event: INNGEST_EVENTS.EXECUTE_WORKFLOW.NAME },
-  async ({ event, step }) => {
+  {
+    id: INNGEST_EVENTS.EXECUTE_WORKFLOW.ID,
+    retries, // TODO: change for prod
+  },
+  {
+    event: INNGEST_EVENTS.EXECUTE_WORKFLOW.NAME,
+    channels: [httpRequestChannel(), manualTriggerChannel()],
+  },
+  async ({ event, step, publish }) => {
     const workflowId = event.data.workflowId;
     if (!workflowId) {
       throw new NonRetriableError("Workflow ID is required");
@@ -65,6 +87,7 @@ export const executeWorkflow = inngest.createFunction(
         nodeId: node.id,
         context,
         step,
+        publish,
       });
     }
 

@@ -1,7 +1,6 @@
 import { NodeType } from "@/generated/prisma/browser";
 import { inngest } from "@/inngest/client";
-import { INNGEST_EVENTS } from "@/inngest/functions";
-import { PAGINATION } from "@/lib/constants";
+import { INNGEST_EVENTS, PAGINATION } from "@/lib/constants";
 import prisma from "@/lib/db";
 import {
   createTRPCRouter,
