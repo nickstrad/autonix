@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { buildWebhookUrl } from "@/lib/urlUtils";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
 
@@ -19,13 +18,13 @@ type Props = {
   onOpenChange: (open: boolean) => void;
 };
 
-export const GoogleFormTriggerNodeDialog = ({ open, onOpenChange }: Props) => {
+export const StripeTriggerNodeDialog = ({ open, onOpenChange }: Props) => {
   const params = useParams();
   const workflowId = String(params?.workflowId);
 
   const webhookUrl = buildWebhookUrl({
     workflowId,
-    type: "google-form",
+    type: "stripe",
   });
 
   const copyToClipboard = async () => {
@@ -41,10 +40,10 @@ export const GoogleFormTriggerNodeDialog = ({ open, onOpenChange }: Props) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Google Form Trigger Configuration</DialogTitle>
+          <DialogTitle>Stripe Trigger Configuration</DialogTitle>
           <DialogDescription>
-            Use this webhook URL in your google Form's Apps Script to trigger
-            this workflow when a form is submitted.
+            Use this webhook URL in your Stripe's dashboard to trigger this
+            workflow when a payment event occurs.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
@@ -69,32 +68,43 @@ export const GoogleFormTriggerNodeDialog = ({ open, onOpenChange }: Props) => {
           </div>
           <div className="rounded-lg bg-muted p-4 space-y-2">
             <h4 className="font-medium">Setup instructions:</h4>
-            <Button variant="link">
-              <Link href="https://www.svix.com/resources/guides/google-forms-webhook/">
-                Google Form Webhook tutorial
-              </Link>
-            </Button>
+            <ol className="list-decimal list-inside text-sm space-y-1">
+              <li>Open your Stripe Dashboard </li>
+              <li>Go to Developers → Webhooks</li>
+              <li>Click "Add endpoint"</li>
+              <li>Paste the webhook URL above</li>
+              <li>
+                Select events to listen for (e.g. payment_intent.succeeded)
+              </li>
+              <li>Save and copy the signing secret</li>
+            </ol>
           </div>
           <div className="rounded-lg bg-muted p-4 space-y-2">
             <h4 className="font-medium text-sm">Available Variables:</h4>
             <ul className="text-sm text-muted-foreground space-y-1">
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {"{{googleForm.respondentEmail}}"}
+                  {"{{stripe.amount}}"}
                 </code>
-                - Respondent's email
+                - Payment Amount
               </li>
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {"{{googleForm.responses['Question Name']}}"}
+                  {"{{stripe.currency}}"}
                 </code>
-                - Specific answer
+                - Payment Currency
               </li>
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {"{{ json googleForm.responses }}"}
+                  {"{{stripe.customerId}}"}
                 </code>
-                - All responses as json
+                - Customer ID
+              </li>
+              <li>
+                <code className="bg-background px-1 py-0.5 rounded">
+                  {"{{json stripe}}"}
+                </code>
+                - Full event data as JSON
               </li>
             </ul>
           </div>

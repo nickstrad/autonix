@@ -22,3 +22,11 @@ ngrok/start:
 	ngrok http --url=jeanna-oxidational-bronchoscopically.ngrok-free.dev 3000
 # -include .env
 # export
+
+.PHONY: stripe/start/webhook
+stripe/start/webhook:
+	stripe listen --forward-to "localhost:3000/api/webhooks/stripe?workflowId=cmjblky8f00016i8o42m0z0gy"
+
+.PHONY: stripe/trigger-event
+stripe/trigger/event:
+	stripe trigger payment_intent.succeeded

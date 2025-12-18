@@ -7,6 +7,7 @@ import { getExcecutor } from "@/features/executions/lib/executor-registry";
 import { httpRequestChannel } from "./channels/http-request";
 import { INNGEST_EVENTS } from "@/lib/constants";
 import { manualTriggerChannel } from "./channels/manual-trigger";
+import { stripeTriggerChannel } from "./channels/stripe-trigger";
 
 type ValidRetryNumber =
   | 0
@@ -44,11 +45,15 @@ const retries = isAllowedRetryNumber(parsedRetries) ? parsedRetries : 0;
 export const executeWorkflow = inngest.createFunction(
   {
     id: INNGEST_EVENTS.EXECUTE_WORKFLOW.ID,
-    retries, // TODO: change for prod
+    retries,
   },
   {
     event: INNGEST_EVENTS.EXECUTE_WORKFLOW.NAME,
-    channels: [httpRequestChannel(), manualTriggerChannel()],
+    channels: [
+      httpRequestChannel(),
+      manualTriggerChannel(),
+      stripeTriggerChannel(),
+    ],
   },
   async ({ event, step, publish }) => {
     const workflowId = event.data.workflowId;

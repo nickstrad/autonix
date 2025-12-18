@@ -15,6 +15,7 @@ Handlebars.registerHelper("json", (context) => {
 const isString = (value: unknown): value is string => {
   return typeof value === "string";
 };
+
 const isValidMethod = (
   method: unknown
 ): method is HttpRequestNodeData["method"] => {
@@ -89,7 +90,6 @@ export const httpRequestExecutor: NodeExecutor<
         }
 
         const interpolatedEndpoint = Handlebars.compile(endpoint)(context);
-        console.log({ endpoint, interpolatedEndpoint });
         if (!interpolatedEndpoint || typeof interpolatedEndpoint !== "string") {
           throw new NonRetriableError(
             `HTTP Request node: Invalid endpoint URL`

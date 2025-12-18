@@ -1,7 +1,8 @@
 import { InitialNode } from "@/components/app/initial-node";
 import { HttpRequestNode } from "@/features/executions/components/http-request/node";
-import { GoogleFormTrigger } from "@/features/triggers/components/google-form-trigger/node";
+import { GoogleFormTriggerNode } from "@/features/triggers/components/google-form-trigger/node";
 import { ManualTriggerNode } from "@/features/triggers/components/manual-trigger/node";
+import { StripeTriggerNode } from "@/features/triggers/components/stripe-trigger/node";
 import { NodeType } from "@/generated/prisma/enums";
 import type { NodeTypes } from "@xyflow/react";
 
@@ -61,7 +62,8 @@ export const NODE_COMPONENTS = {
   [NodeType.INITIAL]: InitialNode,
   [NodeType.HTTP_REQUEST]: HttpRequestNode,
   [NodeType.MANUAL_TRIGGER]: ManualTriggerNode,
-  [NodeType.GOOGLE_FORM_TRIGGER]: GoogleFormTrigger,
+  [NodeType.GOOGLE_FORM_TRIGGER]: GoogleFormTriggerNode,
+  [NodeType.STRIPE_TRIGGER]: StripeTriggerNode,
 } as const satisfies NodeTypes;
 
 export type RegisteredNodeType = keyof typeof NODE_COMPONENTS;
@@ -74,6 +76,7 @@ const INNGEST_EVENT_EXECUTE_WORKFLOW = "workflows/execute.workflow";
 const INNGEST_EVENT_MANUAL_TRIGGER = "triggers/manual.trigger";
 const INNGEST_EVENT_HTTP_REQUEST = "http-request/http.request";
 const INNGEST_EVENT_GOOGLE_FORM_TRIGGER = "triggers/google.form";
+const INNGEST_EVENT_STRIPE_TRIGGER = "triggers/stripe";
 
 export const INNGEST_EVENTS = {
   EXECUTE_WORKFLOW: {
@@ -92,10 +95,24 @@ export const INNGEST_EVENTS = {
     NAME: INNGEST_EVENT_GOOGLE_FORM_TRIGGER,
     ID: `${PREFIX}/${INNGEST_EVENT_GOOGLE_FORM_TRIGGER}`,
   },
+  STRIPE_TRIGGER: {
+    NAME: INNGEST_EVENT_STRIPE_TRIGGER,
+    ID: `${PREFIX}/${INNGEST_EVENT_STRIPE_TRIGGER}`,
+  },
 } as const;
 
 export const INNGEST_CHANELS = {
   HTTP_REQUEST: "http-request-execution",
   MANUAL_TRIGGER: "manual-trigger-execution",
   GOOGLE_FORM_TRIGGER: "google-form-trigger-execution",
+  STRIPE_TRIGGER: "stripe-trigger-execution",
 } as const;
+
+// Webhook values and types
+// TODO: investigate svix as production level webhooks as a service company
+export const WEBHOOK_TYPES = {
+  STRIPE: "stripe",
+  GOOGLE_FORM: "google-form",
+} as const;
+
+export type Webhook = (typeof WEBHOOK_TYPES)[keyof typeof WEBHOOK_TYPES];

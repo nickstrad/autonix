@@ -1,8 +1,8 @@
 import { INNGEST_CHANELS } from "@/lib/constants";
 import { channel, topic } from "@inngest/realtime";
 
-export const GoogleFormTriggerNodeChannel = channel(
-  INNGEST_CHANELS.GOOGLE_FORM_TRIGGER
+export const stripeTriggerChannel = channel(
+  INNGEST_CHANELS.STRIPE_TRIGGER
 ).addTopic(
   topic("status").type<{
     nodeId: string;
