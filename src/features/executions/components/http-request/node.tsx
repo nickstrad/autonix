@@ -8,7 +8,7 @@ import { HttpRequestFormValues, HttpRequestDialog } from "./dialog";
 import { Separator } from "@/components/ui/separator";
 import { useNodeStatus } from "../../hooks/use-node-status";
 import { fetchHttpRequestRealtimeToken } from "./actions";
-import { INNGEST_CHANELS } from "@/lib/constants";
+import { INNGEST_CHANNELS } from "@/lib/constants";
 
 export type HttpRequestNodeData = {
   variableName: string;
@@ -26,7 +26,7 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
     topic: "status",
-    channel: INNGEST_CHANELS.HTTP_REQUEST,
+    channel: INNGEST_CHANNELS.HTTP_REQUEST,
     refreshToken: fetchHttpRequestRealtimeToken,
   });
 

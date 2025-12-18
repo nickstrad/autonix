@@ -1,8 +1,8 @@
-import { INNGEST_CHANELS } from "@/lib/constants";
 import { channel, topic } from "@inngest/realtime";
+import { INNGEST_CHANNELS } from "@/lib/constants";
 
 export const stripeTriggerChannel = channel(
-  INNGEST_CHANELS.STRIPE_TRIGGER
+  INNGEST_CHANNELS.STRIPE_TRIGGER
 ).addTopic(
   topic("status").type<{
     nodeId: string;

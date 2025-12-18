@@ -1,9 +1,17 @@
 import { InitialNode } from "@/components/app/initial-node";
+import {
+  AnthropicNode,
+  GeminiNode,
+  OpenAINode,
+} from "@/features/executions/components/ai-provider/lazy-nodes";
 import { HttpRequestNode } from "@/features/executions/components/http-request/node";
 import { GoogleFormTriggerNode } from "@/features/triggers/components/google-form-trigger/node";
 import { ManualTriggerNode } from "@/features/triggers/components/manual-trigger/node";
 import { StripeTriggerNode } from "@/features/triggers/components/stripe-trigger/node";
 import { NodeType } from "@/generated/prisma/enums";
+import { createAnthropic } from "@ai-sdk/anthropic";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createOpenAI } from "@ai-sdk/openai";
 import type { NodeTypes } from "@xyflow/react";
 
 export const APP_NAME = "Autonix";
@@ -58,16 +66,6 @@ export const PAGINATION = {
   MIN_PAGE_SIZE: 1,
 } as const;
 
-export const NODE_COMPONENTS = {
-  [NodeType.INITIAL]: InitialNode,
-  [NodeType.HTTP_REQUEST]: HttpRequestNode,
-  [NodeType.MANUAL_TRIGGER]: ManualTriggerNode,
-  [NodeType.GOOGLE_FORM_TRIGGER]: GoogleFormTriggerNode,
-  [NodeType.STRIPE_TRIGGER]: StripeTriggerNode,
-} as const satisfies NodeTypes;
-
-export type RegisteredNodeType = keyof typeof NODE_COMPONENTS;
-
 /*
 INNGEST values
 */
@@ -101,12 +99,100 @@ export const INNGEST_EVENTS = {
   },
 } as const;
 
-export const INNGEST_CHANELS = {
+/* AI Provider values */
+export const AI_PROVIDERS = {
+  GEMINI: NodeType.GEMINI,
+  ANTHROPIC: NodeType.ANTHROPIC,
+  OPENAI: NodeType.OPENAI,
+} as const;
+
+export const INNGEST_CHANNELS = {
   HTTP_REQUEST: "http-request-execution",
   MANUAL_TRIGGER: "manual-trigger-execution",
   GOOGLE_FORM_TRIGGER: "google-form-trigger-execution",
   STRIPE_TRIGGER: "stripe-trigger-execution",
+  [AI_PROVIDERS.GEMINI]: "ai-provider-gemini-execution",
+  [AI_PROVIDERS.ANTHROPIC]: "ai-provider-anthropic-execution",
+  [AI_PROVIDERS.OPENAI]: "ai-provider-openai-execution",
 } as const;
+
+export const getAIProviderChannelName = (provider: AIProvider) => {
+  const providerName = AI_PROVIDERS[provider];
+  if (!(providerName in INNGEST_CHANNELS)) {
+    throw new Error(`Invalid AI provider: ${provider}`);
+  }
+  return INNGEST_CHANNELS[providerName];
+};
+
+export type AIProvider = (typeof AI_PROVIDERS)[keyof typeof AI_PROVIDERS];
+
+export const AI_PROVIDER_MAP = {
+  [AI_PROVIDERS.GEMINI]: AI_PROVIDERS.GEMINI,
+  [AI_PROVIDERS.ANTHROPIC]: AI_PROVIDERS.ANTHROPIC,
+  [AI_PROVIDERS.OPENAI]: AI_PROVIDERS.OPENAI,
+} as const;
+
+export type AIProviderNodeType = keyof typeof AI_PROVIDER_MAP;
+export const AI_PROVIDER_NODES = Object.keys(
+  AI_PROVIDER_MAP
+) as AIProviderNodeType[];
+
+export const getAIProviderModel = (provider: AIProvider) => {
+  switch (provider) {
+    case AI_PROVIDERS.GEMINI:
+      return createGoogleGenerativeAI().chat("gemini-2.5-flash");
+    case AI_PROVIDERS.ANTHROPIC:
+      return createAnthropic()("claude-haiku-4-5");
+    case AI_PROVIDERS.OPENAI:
+      return createOpenAI().chat("gpt-5.2");
+    default:
+      throw new Error(`Unsupported AI provider type: ${provider}`);
+  }
+};
+
+const AI_PROVIDERS_CONFIG: {
+  [key in AIProvider]: {
+    label: string;
+    icon: string;
+    channel: string;
+  };
+} = {
+  [AI_PROVIDERS.GEMINI]: {
+    label: "Gemini",
+    icon: "/logos/gemini.svg",
+    channel: getAIProviderChannelName(AI_PROVIDERS.GEMINI),
+  },
+  [AI_PROVIDERS.ANTHROPIC]: {
+    label: "Anthropic",
+    icon: "/logos/anthropic.svg",
+    channel: getAIProviderChannelName(AI_PROVIDERS.ANTHROPIC),
+  },
+  [AI_PROVIDERS.OPENAI]: {
+    label: "OpenAI",
+    icon: "/logos/openai.svg",
+    channel: getAIProviderChannelName(AI_PROVIDERS.OPENAI),
+  },
+} as const;
+
+export const getAIProviderConfig = (provider: AIProvider) => {
+  if (!(provider in AI_PROVIDERS_CONFIG)) {
+    throw new Error(`Invalid AI provider: ${provider}`);
+  }
+  return AI_PROVIDERS_CONFIG[provider];
+};
+
+export const NODE_COMPONENTS = {
+  [NodeType.INITIAL]: InitialNode,
+  [NodeType.HTTP_REQUEST]: HttpRequestNode,
+  [NodeType.MANUAL_TRIGGER]: ManualTriggerNode,
+  [NodeType.GOOGLE_FORM_TRIGGER]: GoogleFormTriggerNode,
+  [NodeType.STRIPE_TRIGGER]: StripeTriggerNode,
+  [NodeType.GEMINI]: GeminiNode,
+  [NodeType.ANTHROPIC]: AnthropicNode,
+  [NodeType.OPENAI]: OpenAINode,
+} as const satisfies NodeTypes;
+
+export type RegisteredNodeType = keyof typeof NODE_COMPONENTS;
 
 // Webhook values and types
 // TODO: investigate svix as production level webhooks as a service company

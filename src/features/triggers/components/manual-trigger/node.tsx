@@ -7,7 +7,7 @@ import { BaseTriggerNode } from "../base-trigger-node";
 import { ManualTriggerDialog } from "./dialog";
 import { useNodeStatus } from "@/features/executions/hooks/use-node-status";
 import { fetchManualTriggerRealtimeToken } from "@/features/triggers/components/manual-trigger/actions";
-import { INNGEST_CHANELS } from "@/lib/constants";
+import { INNGEST_CHANNELS } from "@/lib/constants";
 
 export const ManualTriggerNode = memo((props: NodeProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -18,7 +18,7 @@ export const ManualTriggerNode = memo((props: NodeProps) => {
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
     topic: "status",
-    channel: INNGEST_CHANELS.MANUAL_TRIGGER,
+    channel: INNGEST_CHANNELS.MANUAL_TRIGGER,
     refreshToken: fetchManualTriggerRealtimeToken,
   });
 

@@ -4,9 +4,9 @@ import type { NodeProps } from "@xyflow/react";
 import { memo, useState } from "react";
 import { BaseTriggerNode } from "../base-trigger-node";
 import { useNodeStatus } from "@/features/executions/hooks/use-node-status";
-import { INNGEST_CHANELS } from "@/lib/constants";
 import { GoogleFormTriggerNodeDialog } from "./dialog";
 import { fetchGoogleFormTriggerNodeRealtimeToken } from "./actions";
+import { INNGEST_CHANNELS } from "@/lib/constants";
 
 export const GoogleFormTriggerNode = memo((props: NodeProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -17,7 +17,7 @@ export const GoogleFormTriggerNode = memo((props: NodeProps) => {
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
     topic: "status",
-    channel: INNGEST_CHANELS.GOOGLE_FORM_TRIGGER,
+    channel: INNGEST_CHANNELS.GOOGLE_FORM_TRIGGER,
     refreshToken: fetchGoogleFormTriggerNodeRealtimeToken,
   });
 

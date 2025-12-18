@@ -25,6 +25,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   workflows     Workflow[]
+  settings      Json       @default("{}")
 
   @@unique([email])
   @@map("user")
@@ -95,6 +96,9 @@ enum NodeType {
   HTTP_REQUEST
   GOOGLE_FORM_TRIGGER
   STRIPE_TRIGGER
+  ANTHROPIC
+  GEMINI
+  OPENAI
 }
 
 model Node {

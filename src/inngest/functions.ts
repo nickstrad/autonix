@@ -5,9 +5,14 @@ import { topologicalSort } from "./utils";
 import { NodeType } from "@/generated/prisma/browser";
 import { getExcecutor } from "@/features/executions/lib/executor-registry";
 import { httpRequestChannel } from "./channels/http-request";
-import { INNGEST_EVENTS } from "@/lib/constants";
 import { manualTriggerChannel } from "./channels/manual-trigger";
 import { stripeTriggerChannel } from "./channels/stripe-trigger";
+import {
+  anthropicChannel,
+  geminiChannel,
+  openAIChannel,
+} from "./channels/ai-providers";
+import { INNGEST_EVENTS } from "@/lib/constants";
 
 type ValidRetryNumber =
   | 0
@@ -53,6 +58,9 @@ export const executeWorkflow = inngest.createFunction(
       httpRequestChannel(),
       manualTriggerChannel(),
       stripeTriggerChannel(),
+      anthropicChannel(),
+      geminiChannel(),
+      openAIChannel(),
     ],
   },
   async ({ event, step, publish }) => {
