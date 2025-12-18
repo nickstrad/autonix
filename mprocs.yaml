@@ -1,4 +1,6 @@
 procs:
+  ngrok:
+    cmd: ["make", "ngrok/start"]
   inngest:
     cmd: ["make", "inngest/dev"]
   http-server:

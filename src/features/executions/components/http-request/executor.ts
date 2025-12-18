@@ -12,7 +12,23 @@ Handlebars.registerHelper("json", (context) => {
   return safeString;
 });
 
-export const httpRequestExecutor: NodeExecutor<HttpRequestNodeData> = async ({
+const isString = (value: unknown): value is string => {
+  return typeof value === "string";
+};
+const isValidMethod = (
+  method: unknown
+): method is HttpRequestNodeData["method"] => {
+  return (
+    typeof method === "string" &&
+    ["GET", "POST", "PUT", "DELETE", "PATCH"].includes(method)
+  );
+};
+
+type HttpRequestTriggerData = Record<string, unknown>;
+
+export const httpRequestExecutor: NodeExecutor<
+  HttpRequestTriggerData
+> = async ({
   context,
   step,
   data: { variableName, endpoint, method, body },
@@ -43,6 +59,17 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestNodeData> = async ({
   });
 
   try {
+    if (!isValidMethod(method)) {
+      throw new NonRetriableError(
+        `HTTP Request node: Invalid method ${method} configured`
+      );
+    }
+    if (!isString(variableName) || variableName.trim() === "") {
+      throw new NonRetriableError(
+        `HTTP Request node: Invalid variable name ${variableName} configured`
+      );
+    }
+
     const result = await step.run(
       INNGEST_EVENTS.HTTP_REQUEST.NAME,
       async () => {
@@ -53,7 +80,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestNodeData> = async ({
 
         if (["PATCH", "POST", "PUT"].includes(options.method)) {
           const interpolatedBody = Handlebars.compile(body ?? "{}")(context);
-          JSON.parse(interpolatedBody); // Validate JSON
+          JSON.parse(interpolatedBody);
 
           options.data = interpolatedBody;
           options.headers = {
@@ -62,7 +89,7 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestNodeData> = async ({
         }
 
         const interpolatedEndpoint = Handlebars.compile(endpoint)(context);
-
+        console.log({ endpoint, interpolatedEndpoint });
         if (!interpolatedEndpoint || typeof interpolatedEndpoint !== "string") {
           throw new NonRetriableError(
             `HTTP Request node: Invalid endpoint URL`
