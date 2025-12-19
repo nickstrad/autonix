@@ -16,7 +16,11 @@ export const EditorHeader = async ({ workflowId }: { workflowId: string }) => {
       <div>
         {session?.user && (
           <UserNav
-            user={{ ...session.user, image: session.user.image ?? null }}
+            user={{
+              ...session.user,
+              image: session.user.image ?? null,
+              settings: {},
+            }}
           />
         )}
       </div>

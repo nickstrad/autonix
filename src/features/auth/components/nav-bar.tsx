@@ -13,7 +13,11 @@ export async function NavBar() {
         <div>
           {session?.user ? (
             <UserNav
-              user={{ ...session.user, image: session.user.image ?? null }}
+              user={{
+                ...session.user,
+                image: session.user.image ?? null,
+                settings: {},
+              }}
             />
           ) : (
             <Button asChild variant="ghost">
