@@ -106,6 +106,12 @@ export const AI_PROVIDERS = {
   OPENAI: NodeType.OPENAI,
 } as const;
 
+export type Settings = {
+  [AI_PROVIDERS.GEMINI]?: string;
+  [AI_PROVIDERS.ANTHROPIC]?: string;
+  [AI_PROVIDERS.OPENAI]?: string;
+};
+
 export const INNGEST_CHANNELS = {
   HTTP_REQUEST: "http-request-execution",
   MANUAL_TRIGGER: "manual-trigger-execution",
@@ -137,14 +143,20 @@ export const AI_PROVIDER_NODES = Object.keys(
   AI_PROVIDER_MAP
 ) as AIProviderNodeType[];
 
-export const getAIProviderModel = (provider: AIProvider) => {
+export const getAIProviderModel = ({
+  provider,
+  apiKey,
+}: {
+  provider: AIProvider;
+  apiKey: string;
+}) => {
   switch (provider) {
     case AI_PROVIDERS.GEMINI:
-      return createGoogleGenerativeAI().chat("gemini-2.5-flash");
+      return createGoogleGenerativeAI({ apiKey }).chat("gemini-2.5-flash");
     case AI_PROVIDERS.ANTHROPIC:
-      return createAnthropic()("claude-haiku-4-5");
+      return createAnthropic({ apiKey })("claude-haiku-4-5");
     case AI_PROVIDERS.OPENAI:
-      return createOpenAI().chat("gpt-5.2");
+      return createOpenAI({ apiKey }).chat("gpt-5.2");
     default:
       throw new Error(`Unsupported AI provider type: ${provider}`);
   }

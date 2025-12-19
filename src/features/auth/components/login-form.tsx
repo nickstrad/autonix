@@ -58,7 +58,7 @@ export function LoginForm() {
           router.push(STATIC_PATHS.HOME);
         },
         onError: (ctx) => {
-          console.log("Error:", ctx.error);
+          console.error("Error:", ctx.error);
           toast.error(ctx.error.message);
         },
       }

@@ -18,7 +18,9 @@ export const GoogleFormTriggerNodeExecutor: NodeExecutor<
     INNGEST_EVENTS.GOOGLE_FORM_TRIGGER.NAME,
     async () => ({
       ...context,
-      GoogleFormTriggerNodeExecutedAt: new Date().toISOString(),
+      googleFormTrigger: {
+        GoogleFormTriggerNodeExecutedAt: new Date().toISOString(),
+      },
     })
   );
 

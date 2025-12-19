@@ -75,7 +75,7 @@ export function UserNav({ user }: { user: User }) {
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>
-        <SettingsForm />
+        <SettingsForm onClose={() => setIsSettingsOpen(false)} />
       </DialogContent>
     </Dialog>
   );

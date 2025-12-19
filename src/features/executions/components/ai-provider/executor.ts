@@ -10,6 +10,8 @@ import {
   AI_PROVIDERS,
   getAIProviderModel,
 } from "@/lib/constants";
+import { UserSettings } from "@/features/settings/lib/user-settings";
+import prisma from "@/lib/db";
 
 Handlebars.registerHelper("json", (context) => {
   const stringifiedData = JSON.stringify(context, null, 2);
@@ -33,6 +35,7 @@ export const getAIProviderExecutor: (
     data: { variableName, prompt },
     nodeId,
     publish,
+    userId,
   }) => {
     const channel = getAIProviderChannel(provider);
 
@@ -68,20 +71,38 @@ export const getAIProviderExecutor: (
           throw new NonRetriableError(`AI Provider node: Invalid prompt`);
         }
 
-        const model = getAIProviderModel(provider);
+        const user = await prisma.user.findUnique({
+          where: { id: userId },
+        });
+
+        const userSettings = new UserSettings(
+          user?.settings as Record<string, unknown> | undefined
+        );
+        const apiKey = userSettings.get(provider);
+
+        if (!apiKey) {
+          throw new NonRetriableError(
+            `AI Provider node: API key not configured for ${provider}. Please set it in your settings.`
+          );
+        }
+
+        const model = getAIProviderModel({ provider, apiKey });
 
         const { text } = await generateText({
           model: model,
           prompt: interpolatedPrompt,
         });
+        const aiProviderContextKey = `${provider.toLowerCase()}`;
 
-        const responsePayload = {
-          response: text,
+        const reponseValues = {
+          [aiProviderContextKey]: {
+            modelResponse: { prompt: interpolatedPrompt, text },
+          },
         };
 
         return {
           ...context,
-          [variableName]: responsePayload,
+          [variableName]: reponseValues,
         };
       });
 

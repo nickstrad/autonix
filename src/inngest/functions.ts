@@ -69,26 +69,33 @@ export const executeWorkflow = inngest.createFunction(
       throw new NonRetriableError("Workflow ID is required");
     }
 
-    const sortedNodes = await step.run("prepare-workflow", async () => {
-      const workflow = await prisma.workflow.findUniqueOrThrow({
-        where: { id: workflowId },
-        include: { nodes: true, connections: true },
-      });
-      try {
-        return topologicalSort({
-          nodes: workflow.nodes,
-          connections: workflow.connections,
+    const { workflow, sortedNodes } = await step.run(
+      "prepare-workflow",
+      async () => {
+        const workflow = await prisma.workflow.findUniqueOrThrow({
+          where: { id: workflowId },
+          include: { nodes: true, connections: true },
         });
-      } catch (err) {
-        if (
-          err instanceof Error &&
-          err.message.includes("Workflow contains a cycle")
-        ) {
-          throw new NonRetriableError("Workflow contains a cycle");
+
+        try {
+          return {
+            workflow,
+            sortedNodes: topologicalSort({
+              nodes: workflow.nodes,
+              connections: workflow.connections,
+            }),
+          };
+        } catch (err) {
+          if (
+            err instanceof Error &&
+            err.message.includes("Workflow contains a cycle")
+          ) {
+            throw new NonRetriableError("Workflow contains a cycle");
+          }
+          throw err;
         }
-        throw err;
       }
-    });
+    );
 
     let context = event.data.initialData || {};
 
@@ -101,6 +108,7 @@ export const executeWorkflow = inngest.createFunction(
         context,
         step,
         publish,
+        userId: workflow.userId,
       });
     }
 

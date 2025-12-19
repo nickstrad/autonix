@@ -83,7 +83,6 @@ export const HttpRequestDialog = ({
   }, [open, defaultValues, form]);
 
   function handleSubmit(data: HttpRequestFormValues) {
-    console.log({ data });
     onSubmit(data);
     onOpenChange(false);
   }
