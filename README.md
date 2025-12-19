@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Autonix
 
-## Getting Started
+Autonix is a n8n and zapier like workflow automation platform.
 
-First, run the development server:
+# Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Autonix currently supports building workflows using manual triggers, http request nodes, AI nodes(e.g. Google Gemini, Anthropic, and OpenAI) nodes, Stripe triggers, and a Google form trigger.
+
+# Architecture
+
+## Asynchronous flow for Workflow Execution
+
+When workflows are being evaluated, they are handled using Inngest(www.inngest.com). This allows longer
+running computation steps to not block the UX. Inngest also has cool features that allow automatic retries,
+and the ability to manual trigger workflow retries while developing.
+
+## Polar for Payments and Subscriptions
+
+Polar.sh is used for payments and subscriptions.
+
+## Bring your own token
+
+There is a settings menu that allows you to store an API token for the AI providers customers would like to
+use in their workflows. This gives users full control over how much they use the platform since we are executing
+actions on behalf of them with their credentials.
+
+## Postgresql Relational Database
+
+The data for this web application is being stored in Postgresql, and Prisma is being used to drive migrations
+and schema creation. The whole application is working without any special extensions, but there is a table that
+uses a `json` data type to store a users settings.
+
+# Dev
+
+This project is being developed with node `v22.18.0`.
+
+## Install dependencies
+
+```
+npm i
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configure .env file
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+# Database (postgresql db instance)
+DATABASE_URL=""
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Better Auth(better-auth.com)
+BETTER_AUTH_SECRET=""
+BETTER_AUTH_URL="http://localhost:3000"
 
-## Learn More
+# Polar Payments(polar.sh)
+POLAR_ACCESS_TOKEN=""
+POLAR_SUCCESS_URL="http://localhost:3000"
+POLAR_SERVER="sandbox"
 
-To learn more about Next.js, take a look at the following resources:
+# Inngest
+INGEST_RETRIES=0
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Next server config
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Ngrok (for local testing with webhooks)
+NGROK_DOMAIN=""
+```
 
-## Deploy on Vercel
+## Run dev servers
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+npm run dev:all
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Screenshots
+
+## Workflows List View
+
+![Workflows View](screenshots/workflows_view.png)
+
+## Workflow View
+
+![Workflow View](screenshots/workflow_view.png)
+
+## Workflow Node Form View
+
+![Node Settings View](screenshots/node_settings.png)
