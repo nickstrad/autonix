@@ -6,29 +6,19 @@ Autonix is a n8n and zapier like workflow automation platform.
 
 Autonix currently supports building workflows using manual triggers, http request nodes, AI nodes(e.g. Google Gemini, Anthropic, and OpenAI) nodes, Stripe triggers, and a Google form trigger.
 
-# Architecture
+# Screenshots
 
-## Asynchronous flow for Workflow Execution
+## Workflows List View
 
-When workflows are being evaluated, they are handled using Inngest(www.inngest.com). This allows longer
-running computation steps to not block the UX. Inngest also has cool features that allow automatic retries,
-and the ability to manual trigger workflow retries while developing.
+![Workflows View](screenshots/workflows_view.png)
 
-## Polar for Payments and Subscriptions
+## Workflow View
 
-Polar.sh is used for payments and subscriptions.
+![Workflow View](screenshots/workflow_view.png)
 
-## Bring your own token
+## Workflow Node Form View
 
-There is a settings menu that allows you to store an API token for the AI providers customers would like to
-use in their workflows. This gives users full control over how much they use the platform since we are executing
-actions on behalf of them with their credentials.
-
-## Postgresql Relational Database
-
-The data for this web application is being stored in Postgresql, and Prisma is being used to drive migrations
-and schema creation. The whole application is working without any special extensions, but there is a table that
-uses a `json` data type to store a users settings.
+![Node Settings View](screenshots/node_settings.png)
 
 # Dev
 
@@ -71,16 +61,26 @@ NGROK_DOMAIN=""
 npm run dev:all
 ```
 
-# Screenshots
+# Architecture
 
-## Workflows List View
+## Asynchronous flow for Workflow Execution
 
-![Workflows View](screenshots/workflows_view.png)
+When workflows are being evaluated, they are handled using Inngest(www.inngest.com). This allows longer
+running computation steps to not block the UX. Inngest also has cool features that allow automatic retries,
+and the ability to manual trigger workflow retries while developing.
 
-## Workflow View
+## Polar for Payments and Subscriptions
 
-![Workflow View](screenshots/workflow_view.png)
+Polar.sh is used for payments and subscriptions.
 
-## Workflow Node Form View
+## Bring your own token
 
-![Node Settings View](screenshots/node_settings.png)
+There is a settings menu that allows you to store an API token for the AI providers customers would like to
+use in their workflows. This gives users full control over how much they use the platform since we are executing
+actions on behalf of them with their credentials.
+
+## Postgresql Relational Database
+
+The data for this web application is being stored in Postgresql, and Prisma is being used to drive migrations
+and schema creation. The whole application is working without any special extensions, but there is a table that
+uses a `json` data type to store a users settings.
