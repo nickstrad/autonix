@@ -23,7 +23,6 @@ import { useRouter } from "next/navigation";
 import { useHasActiveSubscription } from "@/features/subscriptions/hooks/use-subscription";
 
 const items = [
-  { label: "Credentials", path: STATIC_PATHS.CREDENTIALS },
   { label: "Executions", path: STATIC_PATHS.EXECUTIONS },
   { label: "Workflows", path: STATIC_PATHS.WORKFLOWS },
 ];

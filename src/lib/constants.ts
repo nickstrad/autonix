@@ -28,8 +28,6 @@ export const ERRORS = {
 } as const;
 
 export const ENTITIES = {
-  CREDENTIAL: "credential",
-  CREDENTIALS: "credentials",
   EXECUTION: "execution",
   EXECUTIONS: "executions",
   WORKFLOW: "workflow",
@@ -43,7 +41,6 @@ export const STATIC_PATHS = {
   LOGIN: "/login",
   LOGOUT: "/logout",
   SIGNUP: "/signup",
-  CREDENTIALS: `/${ENTITIES.CREDENTIALS}`,
   EXECUTIONS: `/${ENTITIES.EXECUTIONS}`,
   WORKFLOWS: `/${ENTITIES.WORKFLOWS}`,
 } as const;
