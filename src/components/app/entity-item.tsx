@@ -26,7 +26,7 @@ export type EntityItemProps = {
   title: string;
   subTitle?: React.ReactNode;
   image?: React.ReactNode;
-  actions?: React.ReactNode;
+  actions?: React.ReactNode[];
   onRemove?: () => void;
   isRemoving?: boolean;
   className?: string;
@@ -71,7 +71,6 @@ export function EntityItem({
       </Link>
       {(actions || onRemove) && (
         <ItemActions className="absolute top-4 right-4 z-10">
-          {actions}
           {onRemove && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -85,6 +84,14 @@ export function EntityItem({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                {actions?.map((action, index) => (
+                  <DropdownMenuItem
+                    key={index}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {action}
+                  </DropdownMenuItem>
+                ))}
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={handleRemove}

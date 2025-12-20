@@ -15,17 +15,18 @@ datasource db {
 }
 
 model User {
-  id            String     @id
+  id            String      @id
   name          String
   email         String
-  emailVerified Boolean    @default(false)
+  emailVerified Boolean     @default(false)
   image         String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @default(now()) @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
   workflows     Workflow[]
-  settings      Json       @default("{}")
+  executions    Execution[]
+  settings      Json        @default("{}")
 
   @@unique([email])
   @@map("user")
@@ -76,15 +77,15 @@ model Verification {
   @@map("verification")
 }
 
-// Workflow models 
+// Workflow models
 model Workflow {
-  id   String @id @default(cuid())
-  name String
-
+  id          String       @id @default(cuid())
+  name        String
   userId      String
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   nodes       Node[]
   connections Connection[]
+  executions  Execution[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -133,4 +134,24 @@ model Connection {
   updatedAt  DateTime @updatedAt
 
   @@unique([fromNodeId, toNodeId, fromOutput, toInput])
+}
+
+enum ExecutionStatus {
+  RUNNING
+  SUCCESS
+  ERROR
+}
+
+model Execution {
+  id         String   @id @default(cuid())
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  status    ExecutionStatus
+  error     String?
+  context   Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

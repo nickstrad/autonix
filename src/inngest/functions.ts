@@ -2,7 +2,7 @@ import prisma from "@/lib/db";
 import { inngest } from "./client";
 import { NonRetriableError } from "inngest";
 import { topologicalSort } from "./utils";
-import { NodeType } from "@/generated/prisma/browser";
+import { ExecutionStatus, NodeType } from "@/generated/prisma/browser";
 import { getExcecutor } from "@/features/executions/lib/executor-registry";
 import { httpRequestChannel } from "./channels/http-request";
 import { manualTriggerChannel } from "./channels/manual-trigger";
@@ -69,49 +69,93 @@ export const executeWorkflow = inngest.createFunction(
       throw new NonRetriableError("Workflow ID is required");
     }
 
-    const { workflow, sortedNodes } = await step.run(
-      "prepare-workflow",
-      async () => {
-        const workflow = await prisma.workflow.findUniqueOrThrow({
-          where: { id: workflowId },
-          include: { nodes: true, connections: true },
-        });
+    const executionId = await step.run("create-execution-record", async () => {
+      const workflow = await prisma.workflow.findUniqueOrThrow({
+        where: { id: workflowId },
+        select: { userId: true },
+      });
+      const execution = await prisma.execution.create({
+        data: {
+          workflowId: workflowId,
+          userId: workflow.userId,
+          status: ExecutionStatus.RUNNING,
+        },
+      });
 
-        try {
-          return {
-            workflow,
-            sortedNodes: topologicalSort({
-              nodes: workflow.nodes,
-              connections: workflow.connections,
-            }),
-          };
-        } catch (err) {
-          if (
-            err instanceof Error &&
-            err.message.includes("Workflow contains a cycle")
-          ) {
-            throw new NonRetriableError("Workflow contains a cycle");
-          }
-          throw err;
-        }
-      }
-    );
+      return execution.id;
+    });
 
     let context = event.data.initialData || {};
 
-    for (const node of sortedNodes) {
-      const executor = getExcecutor(node.type as NodeType);
+    try {
+      const { workflow, sortedNodes } = await step.run(
+        "prepare-workflow",
+        async () => {
+          const workflow = await prisma.workflow.findUniqueOrThrow({
+            where: { id: workflowId },
+            include: { nodes: true, connections: true },
+          });
 
-      context = await executor({
-        data: node.data as Record<string, unknown>,
-        nodeId: node.id,
-        context,
-        step,
-        publish,
-        userId: workflow.userId,
+          try {
+            return {
+              workflow,
+              sortedNodes: topologicalSort({
+                nodes: workflow.nodes,
+                connections: workflow.connections,
+              }),
+            };
+          } catch (err) {
+            if (
+              err instanceof Error &&
+              err.message.includes("Workflow contains a cycle")
+            ) {
+              throw new NonRetriableError("Workflow contains a cycle");
+            }
+            throw err;
+          }
+        }
+      );
+
+      for (const node of sortedNodes) {
+        const executor = getExcecutor(node.type as NodeType);
+
+        context = await executor({
+          data: node.data as Record<string, unknown>,
+          nodeId: node.id,
+          context,
+          step,
+          publish,
+          userId: workflow.userId,
+        });
+      }
+
+      await step.run("mark-execution-as-successful", async () => {
+        return prisma.execution.update({
+          where: { id: executionId },
+          data: {
+            status: ExecutionStatus.SUCCESS,
+            context: context,
+          },
+        });
       });
-    }
 
-    return { workflowId, result: context };
+      return { workflowId, result: context };
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+
+      await step.run("mark-execution-as-failed", async () => {
+        return prisma.execution.update({
+          where: { id: executionId },
+          data: {
+            status: ExecutionStatus.ERROR,
+            error: errorMessage,
+            context: context,
+          },
+        });
+      });
+
+      throw error; // Re-throw to allow Inngest to handle retries
+    }
   }
 );

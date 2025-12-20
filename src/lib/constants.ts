@@ -49,6 +49,10 @@ export const DYNAMIC_PATH_BUILDERS = {
   WORKFLOWS: {
     detailsView: (id: string) => `${STATIC_PATHS.WORKFLOWS}/${id}`,
   },
+  EXECUTIONS: {
+    byWorkflow: (workflowId: string) =>
+      `${STATIC_PATHS.EXECUTIONS}?workflowId=${workflowId}`,
+  },
 } as const;
 
 export const POLAR = {

@@ -20,6 +20,14 @@ Autonix currently supports building workflows using manual triggers, http reques
 
 ![Node Settings View](screenshots/node_settings.png)
 
+## Executions View
+
+![Executions View](screenshots/executions_view.png)
+
+## Execution Details View
+
+![Execution Details View](screenshots/execution_details.png)
+
 # Dev
 
 This project is being developed with node `v22.18.0`.

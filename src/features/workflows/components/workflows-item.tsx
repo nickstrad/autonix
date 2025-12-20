@@ -4,10 +4,12 @@ import { EntityItem } from "@/components/app/entity-item";
 import type { Workflow } from "@/generated/prisma/client";
 import { DYNAMIC_PATH_BUILDERS } from "@/lib/constants";
 import { formatDistanceToNow, formatRelative } from "date-fns";
-import { WorkflowIcon } from "lucide-react";
+import { WorkflowIcon, ListIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRemoveWorkflow } from "../hooks/use-workflows";
 import { useCallback } from "react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type WorkflowsItemProps = {
   workflow: Workflow;
@@ -43,6 +45,17 @@ export const WorkflowsItem = ({ workflow }: WorkflowsItemProps) => {
         </div>
       }
       image={<WorkflowIcon />}
+      actions={[
+        <Link
+          href={DYNAMIC_PATH_BUILDERS.EXECUTIONS.byWorkflow(workflow.id)}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Button variant="ghost" size="icon" className="size-full">
+            <ListIcon className="size-4" />
+            <p>Executions</p>
+          </Button>
+        </Link>,
+      ]}
       onRemove={() => handleDelete(workflow)}
       isRemoving={removeWorkflow.isPending}
     />
