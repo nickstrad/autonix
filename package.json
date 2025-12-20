@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "dev:all": "mprocs",
-    "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && next build"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.56",
