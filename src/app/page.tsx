@@ -1,8 +1,7 @@
-"use client";
 import React from "react";
 
-export const Home = () => {
+const Page = async () => {
   return <div>Welcome</div>;
 };
 
-export default Home;
+export default Page;
