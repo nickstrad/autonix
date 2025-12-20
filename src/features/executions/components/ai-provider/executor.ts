@@ -3,7 +3,7 @@ import { NodeExecutor } from "@/features/executions/types";
 import Handlebars from "handlebars";
 import { getAIProviderChannel } from "@/inngest/channels/ai-providers";
 import { generateText } from "ai";
-import { NodeType } from "@/generated/prisma/browser";
+import { NodeType } from "@/generated/prisma";
 import {
   AIProvider,
   AIProviderNodeType,

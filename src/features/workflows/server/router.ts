@@ -1,4 +1,4 @@
-import { NodeType } from "@/generated/prisma/browser";
+import { NodeType } from "@/generated/prisma";
 import { sendWorkflowExecutionEvent } from "@/inngest/utils";
 import { PAGINATION } from "@/lib/constants";
 import prisma from "@/lib/db";

@@ -28,7 +28,7 @@ import "@xyflow/react/dist/style.css";
 import { editorAtom } from "../store/atoms";
 import { Button } from "@/components/ui/button";
 import { SaveIcon } from "lucide-react";
-import { NodeType } from "@/generated/prisma/enums";
+import { NodeType } from "@/generated/prisma";
 import { ExecuteWorkflowButton } from "./execute-workflow-button";
 
 export const Editor = ({ workflowId }: { workflowId: string }) => {
