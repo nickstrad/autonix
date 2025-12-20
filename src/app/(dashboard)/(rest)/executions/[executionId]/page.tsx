@@ -4,12 +4,12 @@ import { LoadingView } from "@/components/app/loading-view";
 import { ExecutionDetails } from "@/features/executions/components/execution-details";
 
 type PageProps = {
-  params: { executionId: string };
+  params: Promise<{ executionId: string }>;
 };
 
 const Page = async ({ params }: PageProps) => {
   await requireAuth();
-  const { executionId } = params;
+  const { executionId } = await params;
 
   return (
     <div className="p-4">
