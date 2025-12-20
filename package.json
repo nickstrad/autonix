@@ -7,7 +7,8 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "dev:all": "mprocs"
+    "dev:all": "mprocs",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.56",
