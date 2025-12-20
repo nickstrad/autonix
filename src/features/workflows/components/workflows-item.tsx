@@ -1,7 +1,7 @@
 "use client";
 
 import { EntityItem } from "@/components/app/entity-item";
-import type { Workflow } from "@/generated/prisma/client";
+import type { Workflow } from "@/generated/prisma";
 import { DYNAMIC_PATH_BUILDERS } from "@/lib/constants";
 import { formatDistanceToNow, formatRelative } from "date-fns";
 import { WorkflowIcon, ListIcon } from "lucide-react";

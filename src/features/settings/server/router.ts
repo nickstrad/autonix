@@ -1,4 +1,4 @@
-import { Prisma } from "@/generated/prisma/client";
+import { Prisma } from "@/generated/prisma";
 import { AI_PROVIDERS, Settings } from "@/lib/constants";
 import { encrypt } from "@/lib/crypto";
 import prisma from "@/lib/db";

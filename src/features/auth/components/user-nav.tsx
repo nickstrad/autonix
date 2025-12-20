@@ -11,7 +11,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-import type { User } from "@/generated/prisma/client";
+import type { User } from "@/generated/prisma";
 import { STATIC_PATHS } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import {

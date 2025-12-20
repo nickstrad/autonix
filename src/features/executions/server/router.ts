@@ -2,8 +2,8 @@ import { PAGINATION } from "@/lib/constants";
 import prisma from "@/lib/db";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { z } from "zod";
-import { ExecutionStatus } from "@/generated/prisma/browser";
-import { Prisma } from "@/generated/prisma/browser";
+import { ExecutionStatus } from "@/generated/prisma";
+import { Prisma } from "@/generated/prisma";
 
 export const executionsRouter = createTRPCRouter({
   getMany: protectedProcedure

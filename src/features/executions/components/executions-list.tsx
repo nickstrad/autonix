@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ExecutionStatus } from "@/generated/prisma/browser";
+import { ExecutionStatus } from "@/generated/prisma";
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown } from "lucide-react";
 import Link from "next/link";
