@@ -53,6 +53,8 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
 # Ngrok (for local testing with webhooks)
 NGROK_DOMAIN=""
+
+ENCRYPTION_KEY=""
 ```
 
 ## Run dev servers

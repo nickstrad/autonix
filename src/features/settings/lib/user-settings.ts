@@ -1,4 +1,4 @@
-import { AI_PROVIDERS, Settings } from "@/lib/constants";
+import { Settings } from "@/lib/constants";
 
 /**
  * UserSettings class provides a convenient interface for working with user settings.
@@ -11,59 +11,12 @@ export class UserSettings {
     this.settings = (settings as Partial<Settings>) || {};
   }
 
-  // Gemini API key
-  get gemini(): string | undefined {
-    return this.settings[AI_PROVIDERS.GEMINI];
-  }
-
-  set gemini(value: string | undefined) {
-    if (value !== undefined && value !== null) {
-      this.settings[AI_PROVIDERS.GEMINI] = value;
-    }
-  }
-
-  // Anthropic API key
-  get anthropic(): string | undefined {
-    return this.settings[AI_PROVIDERS.ANTHROPIC];
-  }
-
-  set anthropic(value: string | undefined) {
-    if (value !== undefined && value !== null) {
-      this.settings[AI_PROVIDERS.ANTHROPIC] = value;
-    }
-  }
-
-  // OpenAI API key
-  get openai(): string | undefined {
-    return this.settings[AI_PROVIDERS.OPENAI];
-  }
-
-  set openai(value: string | undefined) {
-    if (value !== undefined && value !== null) {
-      this.settings[AI_PROVIDERS.OPENAI] = value;
-    }
-  }
-
   /**
-   * Get a setting value by key (for dynamic access)
+   * Get a setting value by key and decrypt it. For server-side use.
+   * This assumes the value was encrypted.
    */
-  get(key: string): string | undefined {
+  getVal(key: string): string | undefined {
     return this.settings[key as keyof Settings];
-  }
-
-  /**
-   * Set a setting value by key (for dynamic access)
-   */
-  set(key: string, value: string): void {
-    this.settings[key as keyof Settings] = value;
-  }
-
-  /**
-   * Check if a setting value exists and is not empty
-   */
-  has(key: string): boolean {
-    const value = this.get(key);
-    return !!value && value.trim() !== "";
   }
 
   /**

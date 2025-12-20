@@ -1,5 +1,6 @@
 import { Prisma } from "@/generated/prisma/client";
-import { AI_PROVIDERS } from "@/lib/constants";
+import { AI_PROVIDERS, Settings } from "@/lib/constants";
+import { encrypt } from "@/lib/crypto";
 import prisma from "@/lib/db";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import z from "zod";
@@ -46,6 +47,18 @@ export const settingsRouter = createTRPCRouter({
         ...currentSettings,
         ...validInput,
       };
+
+      Object.values(AI_PROVIDERS).forEach((key) => {
+        const provider = key as keyof Settings;
+        if (currentSettings[provider] === updatedSettings[provider]) {
+          return;
+        }
+        const unencrypted = String(updatedSettings[provider]);
+        updatedSettings[provider] = unencrypted
+          ? encrypt(unencrypted)
+          : undefined;
+      });
+
       return await prisma.user.update({
         where: {
           id: ctx.auth.user.id,

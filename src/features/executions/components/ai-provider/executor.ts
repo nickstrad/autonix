@@ -12,6 +12,7 @@ import {
 } from "@/lib/constants";
 import { UserSettings } from "@/features/settings/lib/user-settings";
 import prisma from "@/lib/db";
+import { decrypt } from "@/lib/crypto";
 
 Handlebars.registerHelper("json", (context) => {
   const stringifiedData = JSON.stringify(context, null, 2);
@@ -78,7 +79,7 @@ export const getAIProviderExecutor: (
         const userSettings = new UserSettings(
           user?.settings as Record<string, unknown> | undefined
         );
-        const apiKey = userSettings.get(provider);
+        const apiKey = userSettings.getVal(provider);
 
         if (!apiKey) {
           throw new NonRetriableError(
@@ -86,7 +87,8 @@ export const getAIProviderExecutor: (
           );
         }
 
-        const model = getAIProviderModel({ provider, apiKey });
+        const decryptedKey = decrypt(apiKey);
+        const model = getAIProviderModel({ provider, apiKey: decryptedKey });
 
         const { text } = await generateText({
           model: model,
