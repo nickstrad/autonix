@@ -33,6 +33,7 @@ export const GoogleFormTriggerNodeDialog = ({ open, onOpenChange }: Props) => {
       await navigator.clipboard.writeText(webhookUrl);
       toast.success("Webhook URL copied to clipboard");
     } catch (err) {
+      console.error(err);
       toast.error("Failed to copy webhook URL");
     }
   };
@@ -43,8 +44,8 @@ export const GoogleFormTriggerNodeDialog = ({ open, onOpenChange }: Props) => {
         <DialogHeader>
           <DialogTitle>Google Form Trigger Configuration</DialogTitle>
           <DialogDescription>
-            Use this webhook URL in your google Form's Apps Script to trigger
-            this workflow when a form is submitted.
+            {`Use this webhook URL in your google Form's Apps Script to trigger
+            this workflow when a form is submitted.`}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
@@ -82,7 +83,7 @@ export const GoogleFormTriggerNodeDialog = ({ open, onOpenChange }: Props) => {
                 <code className="bg-background px-1 py-0.5 rounded">
                   {"{{googleForm.respondentEmail}}"}
                 </code>
-                - Respondent's email
+                {`- Respondent's email`}
               </li>
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">

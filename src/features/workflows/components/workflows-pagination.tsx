@@ -5,7 +5,7 @@ import { EntityPagination } from "@/components/app/entity-pagination";
 import { useSuspenseWorkflows } from "../hooks/use-workflows";
 
 export const WorkflowsPagination = () => {
-  const [params, setParams] = useWorkflowParams();
+  const [, setParams] = useWorkflowParams();
   const workflows = useSuspenseWorkflows();
   return (
     <EntityPagination

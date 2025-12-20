@@ -17,8 +17,8 @@ export type AIProviderNodeData = {
 
 type AIProviderNodeProps = Node<AIProviderNodeData>;
 
-export const getAIProviderNode =
-  (provider: AIProvider) => (props: NodeProps<AIProviderNodeProps>) => {
+export const getAIProviderNode = (provider: AIProvider) => {
+  const AIProviderNode = (props: NodeProps<AIProviderNodeProps>) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const { setNodes } = useReactFlow();
 
@@ -91,4 +91,6 @@ export const getAIProviderNode =
     );
   };
 
-getAIProviderNode.displayName = "getAIProviderNode";
+  AIProviderNode.displayName = `AIProviderNode(${provider})`;
+  return AIProviderNode;
+};

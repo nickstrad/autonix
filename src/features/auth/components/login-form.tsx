@@ -54,7 +54,7 @@ export function LoginForm() {
         callbackURL: STATIC_PATHS.HOME,
       },
       {
-        onSuccess: (ctx) => {
+        onSuccess: () => {
           router.push(STATIC_PATHS.HOME);
         },
         onError: (ctx) => {
@@ -174,7 +174,7 @@ export function LoginForm() {
             <CardFooter className="flex-col gap-2">
               <Button className="w-full">Sign in</Button>
               <p className="text-sm">
-                Don't have an account?{" "}
+                {`Don't have an account? `}
                 <Link
                   href={STATIC_PATHS.SIGNUP}
                   className="text-blue-500 hover:underline"

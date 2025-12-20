@@ -1,3 +1,4 @@
+/* eslint-disable */
 import "server-only"; // <-- ensure this file cannot be imported from the client
 import {
   createTRPCOptionsProxy,
@@ -28,6 +29,7 @@ export function HydrateClient(props: { children: React.ReactNode }) {
     </HydrationBoundary>
   );
 }
+
 export function prefetch<T extends ReturnType<TRPCQueryOptions<any>>>(
   queryOptions: T
 ) {

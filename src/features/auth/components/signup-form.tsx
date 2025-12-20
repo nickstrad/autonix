@@ -25,7 +25,7 @@ import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { APP_NAME, STATIC_PATHS } from "@/lib/constants";
+import { STATIC_PATHS } from "@/lib/constants";
 import { AppLogo } from "@/components/app/AppLogo";
 
 const signUpSchema = z

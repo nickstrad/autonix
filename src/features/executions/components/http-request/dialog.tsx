@@ -95,7 +95,7 @@ export const HttpRequestDialog = ({
     if (!showBody) {
       form.setValue("body", "");
     }
-  }, [showBody]);
+  }, [showBody, form]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

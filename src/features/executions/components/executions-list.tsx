@@ -12,7 +12,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { ExecutionStatus } from "@/generated/prisma/browser";
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown } from "lucide-react";
@@ -20,14 +19,6 @@ import Link from "next/link";
 import { EntityPagination } from "@/components/app/entity-pagination";
 import { ExecutionsEmpty } from "./executions-empty";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { JsonValue } from "@prisma/client/runtime/library";
 import { ContextViewer } from "./context-viewer";
 import { StatusBadge } from "./execution-details";
 import { DYNAMIC_PATH_BUILDERS } from "@/lib/constants";

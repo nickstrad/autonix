@@ -14,6 +14,7 @@ import { Separator } from "../ui/separator";
 import { useReactFlow } from "@xyflow/react";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import Image from "next/image";
 
 export type NodeTypeOption = {
   type: NodeType;
@@ -153,7 +154,7 @@ export const NodeSelector = ({
               >
                 <div className="flex items-center gap-6 w-full overflow-hidden">
                   {typeof Icon === "string" ? (
-                    <img
+                    <Image
                       src={Icon}
                       alt={nodetype.label}
                       className="size-5 object-contain rounded-sm"
@@ -188,7 +189,7 @@ export const NodeSelector = ({
               >
                 <div className="flex items-center gap-6 w-full overflow-hidden">
                   {typeof Icon === "string" ? (
-                    <img
+                    <Image
                       src={Icon}
                       alt={nodetype.label}
                       className="size-5 object-contain rounded-sm"

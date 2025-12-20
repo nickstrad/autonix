@@ -32,6 +32,7 @@ export const StripeTriggerNodeDialog = ({ open, onOpenChange }: Props) => {
       await navigator.clipboard.writeText(webhookUrl);
       toast.success("Webhook URL copied to clipboard");
     } catch (err) {
+      console.error(err);
       toast.error("Failed to copy webhook URL");
     }
   };
@@ -42,8 +43,8 @@ export const StripeTriggerNodeDialog = ({ open, onOpenChange }: Props) => {
         <DialogHeader>
           <DialogTitle>Stripe Trigger Configuration</DialogTitle>
           <DialogDescription>
-            Use this webhook URL in your Stripe's dashboard to trigger this
-            workflow when a payment event occurs.
+            {`Use this webhook URL in your Stripe's dashboard to trigger this
+            workflow when a payment event occurs.`}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
@@ -71,7 +72,7 @@ export const StripeTriggerNodeDialog = ({ open, onOpenChange }: Props) => {
             <ol className="list-decimal list-inside text-sm space-y-1">
               <li>Open your Stripe Dashboard </li>
               <li>Go to Developers → Webhooks</li>
-              <li>Click "Add endpoint"</li>
+              <li>{`Click "Add endpoint"`}</li>
               <li>Paste the webhook URL above</li>
               <li>
                 Select events to listen for (e.g. payment_intent.succeeded)

@@ -26,7 +26,6 @@ import {
 } from "@/features/settings/hooks/use-settings";
 import { UserSettings } from "@/features/settings/lib/user-settings";
 import { useEffect } from "react";
-import { on } from "events";
 import { toast } from "sonner";
 
 const FormSchema = z.object({

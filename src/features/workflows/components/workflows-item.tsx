@@ -5,7 +5,6 @@ import type { Workflow } from "@/generated/prisma/client";
 import { DYNAMIC_PATH_BUILDERS } from "@/lib/constants";
 import { formatDistanceToNow, formatRelative } from "date-fns";
 import { WorkflowIcon, ListIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useRemoveWorkflow } from "../hooks/use-workflows";
 import { useCallback } from "react";
 import { Button } from "@/components/ui/button";
@@ -17,13 +16,12 @@ type WorkflowsItemProps = {
 
 export const WorkflowsItem = ({ workflow }: WorkflowsItemProps) => {
   const removeWorkflow = useRemoveWorkflow();
-  const router = useRouter();
 
   const handleDelete = useCallback(
     (workflow: Workflow) => {
       removeWorkflow.mutate({ id: workflow.id });
     },
-    [removeWorkflow, router]
+    [removeWorkflow]
   );
 
   return (
@@ -47,6 +45,7 @@ export const WorkflowsItem = ({ workflow }: WorkflowsItemProps) => {
       image={<WorkflowIcon />}
       actions={[
         <Link
+          key={"executions-link"}
           href={DYNAMIC_PATH_BUILDERS.EXECUTIONS.byWorkflow(workflow.id)}
           onClick={(e) => e.stopPropagation()}
         >

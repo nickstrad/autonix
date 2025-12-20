@@ -1,7 +1,6 @@
 import { NodeType } from "@/generated/prisma/browser";
-import { inngest } from "@/inngest/client";
 import { sendWorkflowExecutionEvent } from "@/inngest/utils";
-import { INNGEST_EVENTS, PAGINATION } from "@/lib/constants";
+import { PAGINATION } from "@/lib/constants";
 import prisma from "@/lib/db";
 import {
   createTRPCRouter,

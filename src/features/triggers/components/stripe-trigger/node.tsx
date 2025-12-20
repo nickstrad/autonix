@@ -36,3 +36,5 @@ export const StripeTriggerNode = memo((props: NodeProps) => {
     </>
   );
 });
+
+StripeTriggerNode.displayName = "StripeTriggerNode";

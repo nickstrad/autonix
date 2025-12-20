@@ -74,7 +74,7 @@ export const httpRequestExecutor: NodeExecutor<
     const result = await step.run(
       INNGEST_EVENTS.HTTP_REQUEST.NAME,
       async () => {
-        let options: AxiosRequestConfig &
+        const options: AxiosRequestConfig &
           Required<Pick<AxiosRequestConfig, "method">> = {
           method,
         };

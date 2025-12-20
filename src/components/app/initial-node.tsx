@@ -19,3 +19,5 @@ export const InitialNode = memo((props) => {
     </NodeSelector>
   );
 });
+
+InitialNode.displayName = "InitialNode";

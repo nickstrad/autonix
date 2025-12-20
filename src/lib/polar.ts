@@ -1,7 +1,6 @@
 import { Polar } from "@polar-sh/sdk";
 
-const servers = ["sandbox", "production"] as const;
-type PolarServer = (typeof servers)[number];
+type PolarServer = "sandbox" | "production";
 
 function assertPolarServer(value?: string): asserts value is PolarServer {
   if (value !== "sandbox" && value !== "production") {

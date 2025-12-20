@@ -1,5 +1,5 @@
 import { PAGINATION } from "@/lib/constants";
-import { parseAsInteger, parseAsString } from "nuqs/server";
+import { parseAsInteger, parseAsString, parseAsStringLiteral } from "nuqs/server";
 
 export const EXECUTIONS_PARAMS = {
   page: parseAsInteger
@@ -10,6 +10,6 @@ export const EXECUTIONS_PARAMS = {
     .withOptions({ clearOnDefault: true }),
   status: parseAsString.withDefault("").withOptions({ clearOnDefault: true }),
   sortBy: parseAsString.withDefault("createdAt"),
-  sortOrder: parseAsString.withDefault("desc"),
+  sortOrder: parseAsStringLiteral(["asc", "desc"] as const).withDefault("desc"),
   workflowId: parseAsString.withDefault("").withOptions({ clearOnDefault: true }),
 };
