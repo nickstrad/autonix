@@ -25,7 +25,8 @@ import {
   useUpdateSettings,
 } from "@/features/settings/hooks/use-settings";
 import { UserSettings } from "@/features/settings/lib/user-settings";
-import { useEffect } from "react";
+import { getChangedSettings } from "@/features/settings/lib/settings-helpers";
+import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 
 const FormSchema = z.object({
@@ -62,6 +63,7 @@ type SettingsFormProps = {
 export function SettingsForm({ onClose }: SettingsFormProps) {
   const { data: settings } = useGetSettings();
   const updateSettings = useUpdateSettings();
+  const originalValuesRef = useRef<FormValues>({});
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -79,13 +81,24 @@ export function SettingsForm({ onClose }: SettingsFormProps) {
     const userSettings = new UserSettings(
       settings as Record<string, unknown> | undefined
     );
-    form.reset(userSettings.toObject());
+    const settingsObject = userSettings.toObject();
+    originalValuesRef.current = settingsObject;
+    form.reset(settingsObject);
   }, [form, settings]);
 
   const onSubmit = (data: FormValues) => {
-    const userSettings = new UserSettings(data);
+    // Only send fields that have changed or are being explicitly cleared
+    const updates = getChangedSettings(data, originalValuesRef.current);
+
+    // Only submit if there are actual changes
+    if (Object.keys(updates).length === 0) {
+      toast.info("No changes to save");
+      onClose();
+      return;
+    }
+
     try {
-      updateSettings.mutate(userSettings.toObject());
+      updateSettings.mutate(updates);
       onClose();
     } catch (err) {
       toast.error("Failed to update settings");

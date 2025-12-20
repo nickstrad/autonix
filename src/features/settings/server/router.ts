@@ -1,8 +1,11 @@
 import { Prisma } from "@/generated/prisma";
-import { AI_PROVIDERS, Settings } from "@/lib/constants";
-import { encrypt } from "@/lib/crypto";
+import { AI_PROVIDERS } from "@/lib/constants";
 import prisma from "@/lib/db";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import {
+  decryptProviderKeys,
+  encryptProviderKeyUpdates,
+} from "@/features/settings/lib/settings-crypto-helpers";
 import z from "zod";
 
 export const settingsRouter = createTRPCRouter({
@@ -18,7 +21,8 @@ export const settingsRouter = createTRPCRouter({
       throw new Error("User not found");
     }
 
-    return user.settings;
+    const settings = user.settings as Prisma.JsonObject;
+    return decryptProviderKeys(settings);
   }),
   update: protectedProcedure
     .input(
@@ -37,27 +41,8 @@ export const settingsRouter = createTRPCRouter({
         throw new Error("User not found");
       }
 
-      const validInput = Object.fromEntries(
-        Object.entries(input).filter(([, value]) => value !== undefined)
-      );
-
       const currentSettings = user.settings as Prisma.JsonObject;
-
-      const updatedSettings = {
-        ...currentSettings,
-        ...validInput,
-      };
-
-      Object.values(AI_PROVIDERS).forEach((key) => {
-        const provider = key as keyof Settings;
-        if (currentSettings[provider] === updatedSettings[provider]) {
-          return;
-        }
-        const unencrypted = String(updatedSettings[provider]);
-        updatedSettings[provider] = unencrypted
-          ? encrypt(unencrypted)
-          : undefined;
-      });
+      const updatedSettings = encryptProviderKeyUpdates(currentSettings, input);
 
       return await prisma.user.update({
         where: {
