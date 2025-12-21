@@ -1,6 +1,6 @@
 # Autonix
 
-Autonix is a n8n and zapier like workflow automation platform.
+Autonix(autonix.sh) is a n8n and zapier like workflow automation platform.
 
 # Features
 
