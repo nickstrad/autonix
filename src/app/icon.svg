@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="#0B0F14"/>
+
+  <!-- A shape -->
+  <!-- Left leg -->
+  <path
+    d="M180 364 L256 148 L232 148 L156 364 Z"
+    fill="#8B8FFF"
+  />
+
+  <!-- Right leg -->
+  <path
+    d="M332 364 L256 148 L280 148 L356 364 Z"
+    fill="#8B8FFF"
+  />
+
+  <!-- Cross bar -->
+  <rect
+    x="210"
+    y="260"
+    width="92"
+    height="40"
+    rx="16"
+    fill="#8B8FFF"
+  />
+</svg>

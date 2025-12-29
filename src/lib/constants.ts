@@ -56,8 +56,8 @@ export const DYNAMIC_PATH_BUILDERS = {
 } as const;
 
 export const POLAR = {
-  PRODUCT_SLUG: "Autonix-Pro",
-  PRODUCT_ID: "d3ab2dfb-5ad4-4fad-a524-c817ab34a5f5",
+  PRODUCT_SLUG: process.env.POLAR_PRODUCT_SLUG || "Autonix-Pro",
+  PRODUCT_ID: process.env.POLAR_PRODUCT_ID || "d3ab2dfb-5ad4-4fad-a524-c817ab34a5f5",
 } as const;
 
 export const PAGINATION = {
